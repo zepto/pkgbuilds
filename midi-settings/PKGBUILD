@@ -1,0 +1,25 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=midi-settings
+pkgver=0.6.5
+pkgrel=1
+pkgdesc="midi-settings is a stupid timidity config editor"
+arch=(any)
+url="lime.tree"
+license=('GPL3')
+depends=(python timidity++ py3gobject)
+options=()
+source=($pkgname-$pkgver.tar.xz)
+md5sums=('2ad76fcf6e417aa63da9b8f8c4e8d67c')
+sha256sums=('8f2be7a30fd80f4f01d4e610709d41bf536f6e24ea4a21ec2bbd1361c8d0269d')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  sed -i -e '/^OnlyShowIn/d' $pkgname.desktop
+
+  python setup.py install --root="$pkgdir"
+
+  install -D -m 644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,11 @@
+--- passage_list/sqlite.py.orig	2009-05-12 20:11:33.000000000 -0500
++++ passage_list/sqlite.py	2009-05-12 20:11:40.000000000 -0500
+@@ -57,7 +57,7 @@
+ 	return manager
+ 
+ def _maybe_setup_database(manager):
+-	num_tables = connection.execute("select count(*) from sqlite_master").fetchone()[0]
++	num_tables = len(connection.execute("select * from sqlite_master").fetchall())
+ 	if num_tables > 0:
+ 		manager.id = connection.execute("select base_topic_id from master_topic_record").fetchone()[0]
+ 		return

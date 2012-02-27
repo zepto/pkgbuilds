@@ -1,0 +1,37 @@
+# Maintainer: Alex Abbott <smartboyathome@gmail.com>
+
+pkgname=ika
+pkgver=0.63
+pkgrel=1
+pkgdesc="An RPG gaming engine for python." 
+arch=(i686 x86_64)
+url="http://ika.sourceforge.net" 
+license=('GPL')
+depends=('python' 'audiere' 'sdl' 'wxgtk' 'corona')
+makedepends=('scons')
+source=(http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-src-${pkgver}.zip SConstruct)
+md5sums=('bff76093919aa3ab3d2c709286d411f3'
+         '9135e60cf410ac55a6908b174f083cbc')
+sha256sums=('e9c2e7cb0bcee3ac110a4a83523f8eaff1997a242ce5c0d7f1b5f0f0e3096a2c'
+            'b885900a9d9a67da4fafc6bf945cfc53ccb461f5c8e7281de36bac544a420dba')
+
+build() { 
+	cd $srcdir/
+	echo "Patching Canvas.cpp"
+	sed -i -e "s/\#include\ <stdexcept>/\#include\ <stdexcept>\n#include\ <string.h>/g" common/Canvas.cpp
+	echo "Patching chr.cpp"
+	sed -i -e "s/\#include\ <stdexcept>/\#include\ <stdexcept>\n#include\ <string.h>/g" common/chr.cpp
+	echo "Patching fileio.cpp"
+	sed -i -e "s/\#include\ <stdio.h>/\#include\ <stdio.h>\n#include\ <string.h>/g" common/fileio.cpp
+	echo "Patching fontfile.cpp"
+	sed -i -e "s/\#include\ <limits>/\#include\ <limits>\n#include\ <string.h>\n#include\ <memory>/g" common/fontfile.cpp
+	echo "Patching vsp.cpp"
+	sed -i -e "s/\#include\ <stdio.h>/\#include\ <stdio.h>\n#include\ <string.h>/g" common/vsp.cpp
+	#echo "Patching SConstruct"
+	#sed -i -e "s_'/usr'_'$pkgdir/usr'_g" SConstruct
+    #sed -i -e "s_PythonVersion(2, 4)_PythonVersion(2, 7)_g" SConstruct
+    #sed -i -e "s_python2\.4_python2.7_g" SConstruct
+	scons
+	mkdir -p $pkgdir/usr/bin
+	cp build/ika $pkgdir/usr/bin
+}

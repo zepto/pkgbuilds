@@ -1,0 +1,41 @@
+# $Id$
+# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor: William Rea <sillywilly@gmail.com>
+# Contributor: Wido <widomaker2k7@gmail.com>
+
+pkgname=lib32-nas
+_pkgname=nas
+pkgver=1.9.2
+pkgrel=1
+pkgdesc='Network Audio System is a network transparent, client/server audio transport system'
+arch=('x86_64')
+url='http://radscan.com/nas.html'
+license=('custom')
+#depends=('lib32-libxaw')
+makedepends=('imake')
+source=("http://downloads.sourceforge.net/sourceforge/${_pkgname}/${_pkgname}-${pkgver}.src.tar.gz"
+        )
+md5sums=('ed7864f55b384452167959022cfb403b'
+         )
+
+build() {
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+
+  cd ${_pkgname}-${pkgver}
+
+  xmkmf
+
+  make World
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} USRLIBDIR=/usr/lib32 install
+
+  chmod 644 ${pkgdir}/usr/include/audio/*
+
+  install -D -m644 ${srcdir}/license.txt ${pkgdir}/usr/share/licenses/${_pkgname}/license
+}

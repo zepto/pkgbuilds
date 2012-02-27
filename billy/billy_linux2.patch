@@ -1,0 +1,460 @@
+--- s/billy.pas	2003-08-08 11:19:14.000000000 -0500
++++ billy.pas	2010-12-24 13:58:21.403727399 -0600
+@@ -21,7 +21,7 @@
+     Any questions regarding what you may do with the software can be sent to
+     Greg Leedberg, at greg@leedberg.com.
+ 
+-    The full, unedited source follows. 
++    The full, unedited source follows.
+ }
+ 
+ { BILLY - v2.21 }
+@@ -123,8 +123,8 @@
+ begin                                  { GetKey }
+   repeat
+     if Keypressed then temp := readkey
+-      else temp := #14;
+-  until temp <> #14;
++      else temp := #15;
++  until temp <> #15;
+   GetKey := temp;
+ end;                                   { GetKey }
+ 
+@@ -372,43 +372,43 @@
+   EResponse[1,0] := 'GREETINGX';
+   EResponse[1,1] := 'HI';
+   EResponse[1,2] := 'HELLO';
+-  EResponse[1,3] := #14;
++  EResponse[1,3] := #15;
+ 
+   EResponse[2,0] := 'NOUNMARKX';
+   EResponse[2,1] := 'THE';
+   EResponse[2,2] := 'A';
+   EResponse[2,3] := 'AN';
+-  EResponse[2,4] := #14;
++  EResponse[2,4] := #15;
+ 
+   EResponse[3,0] := 'INSULTX';
+   EResponse[3,1] := 'MORON';
+   EResponse[3,2] := 'IDIOT';
+   EResponse[3,3] := 'GEEK';
+-  EResponse[3,4] := #14;
++  EResponse[3,4] := #15;
+ 
+   EResponse[4,0] := 'BILLYX';
+   EResponse[4,1] := 'YOU';
+   EResponse[4,2] := 'YOURSELF';
+-  EResponse[4,3] := #14;
++  EResponse[4,3] := #15;
+ 
+   EResponse[5,0] := 'AFFIRMX';
+   EResponse[5,1] := 'YES';
+   EResponse[5,2] := 'YEAH';
+   EResponse[5,3] := 'SURE';
+   EResponse[5,4] := 'YEA';
+-  EResponse[5,5] := #14;
++  EResponse[5,5] := #15;
+ 
+   EResponse[6,0] := 'QUESTIONX';
+   EResponse[6,1] := 'WHAT';
+   EResponse[6,2] := 'HOW';
+   EResponse[6,3] := 'WHY';
+   EResponse[6,4] := 'WHO';
+-  EResponse[6,5] := #14;
++  EResponse[6,5] := #15;
+ 
+   EResponse[7,0] := 'DEFX';
+   EResponse[7,1] := 'IS';
+   EResponse[7,2] := 'ARE';
+-  EResponse[7,3] := #14;
++  EResponse[7,3] := #15;
+ 
+   EResponse[8,0] := 'NAMEX';
+   assign(LoadFile,NAME_FILE);
+@@ -421,44 +421,44 @@
+       loop := loop + 1;
+   until eof(LoadFile) OR (loop > ElementsMax);
+   close(LoadFile);
+-  EResponse[8,loop] := #14;
++  EResponse[8,loop] := #15;
+ 
+   EResponse[9,0] := 'WEATHERX';
+   EResponse[9,1] := 'WEATHER';
+-  EResponse[9,2] := #14;
++  EResponse[9,2] := #15;
+ 
+   EResponse[10,0] := 'TIMEX';
+   EResponse[10,1] := 'TIME';
+   EResponse[10,2] := 'CLOCK';
+-  EResponse[10,3] := #14;
++  EResponse[10,3] := #15;
+ 
+   EResponse[11,0] := 'NEGATIVEX';
+   EResponse[11,1] := 'NO';
+   EResponse[11,2] := 'NOPE';
+-  EResponse[11,3] := #14;
++  EResponse[11,3] := #15;
+ 
+   EResponse[12,0] := 'MODX';
+   EResponse[12,1] := 'VERY';
+   EResponse[12,2] := 'ABSOLUTELY';
+   EResponse[12,3] := 'REALLY';
+   EResponse[12,4] := 'TOO';
+-  EResponse[12,5] := #14;
++  EResponse[12,5] := #15;
+ 
+   EResponse[13,0] := 'PRONOUNX';
+   EResponse[13,1] := 'HE';
+   EResponse[13,2] := 'SHE';
+   EResponse[13,3] := 'IT';
+   EResponse[13,4] := 'THEY';
+-  EResponse[13,5] := #14;
++  EResponse[13,5] := #15;
+ 
+   EResponse[14,0] := 'WILLX';
+   EResponse[14,1] := 'WILL';
+   EResponse[14,2] := 'WOULD';
+-  EResponse[14,3] := #14;
++  EResponse[14,3] := #15;
+ 
+   EResponse[15,0] := 'MAYBEX';
+   EResponse[15,1] := 'MAYBE';
+-  EResponse[15,2] := #14;
++  EResponse[15,2] := #15;
+ end;
+ 
+ (***************************************************************)
+@@ -481,7 +481,7 @@
+         repeat
+           if ToUpper(Target) = EResponse[loop2,loop3] then Temp := EResponse[loop2,0];
+           loop3 := loop3 + 1;
+-        until EResponse[loop2,loop3] = #14;
++        until EResponse[loop2,loop3] = #15;
+       end;
+ 
+   if Temp = '' then Temp := ToUpper(Target);
+@@ -513,7 +513,7 @@
+   UData.WordC := 1;
+   for loop := 1 to length(UData.UserIn) do
+     begin
+-      if UData.UserIn[loop]  IN ['!', '.', ',', '?', '/', '\', '(', ')'] then UData.UserIn[loop] := #14;
++      if UData.UserIn[loop]  IN ['!', '.', ',', '?', '/', '\', '(', ')'] then UData.UserIn[loop] := #15;
+       if UData.UserIn[loop] = ' ' then
+         begin
+           Udata.WordC := Udata.WordC + 1;
+@@ -555,7 +555,7 @@
+        TempString := '';
+        for loop2 := 1 to length(UData.Words[loop]) do
+          begin
+-           if UData.Words[loop,loop2] <> #14 then TempString := TempString + UData.Words[loop,loop2];
++           if UData.Words[loop,loop2] <> #15 then TempString := TempString + UData.Words[loop,loop2];
+          end;
+        UData.Words[loop] := TempString;
+      end;
+@@ -798,7 +798,7 @@
+           close(LoadFile);
+           if Capitalize then Temp[1] := upcase(Temp[1]);
+         end}
+-    else Temp := #14;
++    else Temp := #15;
+ {  end;}
+ 
+   assign(LoadFile,IS3_FILE);
+@@ -807,12 +807,12 @@
+   close(LoadFile);
+   if ToUpper(Sender) = ToUpper(UserName) then Sender := 'you';
+ 
+-  if toupper(IsSub) = 'MY NAME ' then Temp := #14+'Your name is '+UserName+', silly!';
+-  if toupper(IsSub) = 'YOUR NAME ' then Temp := #14+'I told you, my name is '+BillyName+'!';
+-  if toupper(IsSub) = 'TODAY ' then Temp := #14+'I believe that today is '+DayOfWeek+'.';
+-  if toupper(IsSub) = 'YOUR BEST FRIEND ' then Temp := #14+UserName+', you are my best friend.';
++  if toupper(IsSub) = 'MY NAME ' then Temp := #15+'Your name is '+UserName+', silly!';
++  if toupper(IsSub) = 'YOUR NAME ' then Temp := #15+'I told you, my name is '+BillyName+'!';
++  if toupper(IsSub) = 'TODAY ' then Temp := #15+'I believe that today is '+DayOfWeek+'.';
++  if toupper(IsSub) = 'YOUR BEST FRIEND ' then Temp := #15+UserName+', you are my best friend.';
+ 
+-  if Temp[1] = #14 then
++  if Temp[1] = #15 then
+     begin
+       Sender := '***';
+       Temp := copy(Temp,2,length(Temp)-1);
+@@ -941,10 +941,10 @@
+     6: if UData.ID[loop] = 'TIMEX' then
+          begin
+            case random(4) of
+-           0: Response := #14+'Let''s see... it is '+Time+'.';
+-           1: Response := #14+'Well, it''s '+Time+'.';
+-           2: Response := #14+'Looks like '+Time+'.';
+-           3: Response := #14+'It''s just about '+Time+'... do you have somewhere to be?';
++           0: Response := #15+'Let''s see... it is '+Time+'.';
++           1: Response := #15+'Well, it''s '+Time+'.';
++           2: Response := #15+'Looks like '+Time+'.';
++           3: Response := #15+'It''s just about '+Time+'... do you have somewhere to be?';
+            end;
+          end;
+ 
+@@ -962,9 +962,9 @@
+     8: if (Udata.ID[loop] = 'QUESTIONX') AND (Udata.ID[loop+1] = 'DEFX') AND (Udata.ID[loop+2] = 'BILLYX') then
+           begin
+             case random(5) of
+-            0: Response := #14+'I''m '+BillyName+', and I''m okay!';
+-            1: Response := #14+'Let''s just talk about you.';
+-            2: Response := #14+'Don''t get me started talking about myself!';
++            0: Response := #15+'I''m '+BillyName+', and I''m okay!';
++            1: Response := #15+'Let''s just talk about you.';
++            2: Response := #15+'Don''t get me started talking about myself!';
+             3: Response := 'Why do you want to know?';
+             4: Response := 'I''m a very shy person.';
+             end;
+@@ -1000,7 +1000,7 @@
+             for loop2 := (loop+2) to Udata.WordC do
+               IsSub := IsSub + Udata.Words[loop2] + ' ';
+             Response := Association(IsSub, random(NumAssoc(IsSub))+1,TRUE);
+-            if Response = #14 then
++            if Response = #15 then
+               case random(3) of
+               0: Response := 'I don''t know the answer to that question...';
+               1: Response := 'Beats me...';
+@@ -1028,7 +1028,7 @@
+     11: if (loop = 1) AND (UData.ID[loop] = 'DEFX') then
+           begin
+             Response := BlindR(UData.OUserin,FALSE);
+-            Response := #14;
++            Response := #15;
+             for loop2 := 2 to (UData.WordC-1) do
+               begin
+                 IsSub := ''; IsSub2 := '';
+@@ -1050,7 +1050,7 @@
+                     if pos(toupper(IsSub),toupper(IsAns2)) > 0 then Response := 'Yes.';
+                   end;
+             end;
+-            if Response = #14 then
++            if Response = #15 then
+               case random(6) of
+               0: Response := 'Never, never, never!';
+               1: Response := 'Not as far as I know!';
+@@ -1147,8 +1147,8 @@
+            loop2 := loop + 1;
+            while UData.ID[loop2] = 'MODX' do loop2 := loop2 + 1;
+            case random(5) of
+-           0: Response := #14+'"'+Udata.Words[loop2]+'" has nothing to do with '+UData.Words[loop-1]+'!';
+-           1: Response := #14+'I agree... '+Udata.Words[loop2]+', '+Udata.Words[loop2]+', '+Udata.Words[loop2]+'!!';
++           0: Response := #15+'"'+Udata.Words[loop2]+'" has nothing to do with '+UData.Words[loop-1]+'!';
++           1: Response := #15+'I agree... '+Udata.Words[loop2]+', '+Udata.Words[loop2]+', '+Udata.Words[loop2]+'!!';
+            2: Response := 'I guess you could say that...';
+            3: Response := 'Thanks for stating the obvious!';
+            4: Response := 'If that''s what you think, then that''s what you think!';
+@@ -1285,7 +1285,7 @@
+     end;
+   if Response <> '' then
+     begin
+-      if random(20) = 0 then Response := #14+Response+' '+RandSmile;
++      if random(20) = 0 then Response := #15+Response+' '+RandSmile;
+       Talked := TRUE;
+       RetResponse := Response;
+     end;
+@@ -1334,7 +1334,7 @@
+     begin
+       getdate(y,mo,d,dw);
+       gettime(h,mi,s,ss);
+-      assign(BillyFile,'BILLY.TXT');
++      assign(BillyFile,'billy.txt');
+       append(BillyFile);
+       writeln(BillyFile);
+       writeln(BillyFile,'***Transcript of ',Mo,'/',d,'/',y,'... starting at ',Time);
+@@ -1354,7 +1354,7 @@
+   case random(3) of
+   0: Response := 'Feel free to talk to me about anything... ';
+   1,2: begin
+-         if Association(UserName+' ',random(NumAssoc(UserName+' '))+1,FALSE) <> #14 then
++         if Association(UserName+' ',random(NumAssoc(UserName+' '))+1,FALSE) <> #15 then
+          if Sender <> '***' then
+            begin
+              UData.UserIn :=Association(UserName+' ',random(NumAssoc(UserName+' '))+1,FALSE);
+@@ -1625,7 +1625,7 @@
+       writeln(LoadFile,FileName);
+       close(LoadFile);
+       swapvectors;
+-      exec('INIT.EXE','');
++      exec('init','');
+       swapvectors;
+       erase(LoadFile);
+       if IOResult <> 0 then
+@@ -1818,7 +1818,7 @@
+ 
+   if RecordT then
+     begin
+-      assign(BillyFile,'BILLY.TXT');
++      assign(BillyFile,'billy.txt');
+       append(BillyFile);
+     end;
+ 
+@@ -1842,7 +1842,7 @@
+     if (Response <> '') AND
+        (Response <> NoResponse) AND
+        (toupper(UData.UserIn) <> 'BYE') AND
+-       (Response[1] <> #14) AND
++       (Response[1] <> #15) AND
+        (INputMEth = 0) then
+       LearnSR(REsponse, UDAta.UserIn);
+ 
+@@ -1861,7 +1861,7 @@
+         if UData.OUSerIn = '/init' then
+           begin
+             swapvectors;
+-            exec('INIT.EXE','');
++            exec('init','');
+             swapvectors;
+           end;
+ 
+@@ -2056,7 +2056,7 @@
+         assign(BillyFile,'chat.msg');
+         rewrite(BillyFile);
+         for loop := 1 to length(Response) do
+-          if Response[loop] <> #14 then
++          if Response[loop] <> #15 then
+             write(BillyFile,Response[loop]);
+         writeln(BillyFile);
+         close(BillyFile);
+@@ -2068,7 +2068,7 @@
+       begin
+         write(BillyFile,ToUpper(BillyName)+'> ');
+         for loop := 1 to length(Response) do
+-          if Response[loop] <> #14 then
++          if Response[loop] <> #15 then
+             write(BillyFile,Response[loop]);
+         writeln(BillyFile);
+        end;
+@@ -2106,4 +2106,4 @@
+       clrscr;
+       textcolor(7);
+     end;
+-end.
+\ No newline at end of file
++end.
+--- s/init.pas	2003-08-08 11:19:34.000000000 -0500
++++ init.pas	2010-12-24 13:57:57.557826694 -0600
+@@ -47,7 +47,7 @@
+   FileName := ToUpper(FileName);
+   if FileName = 'BR.BFB' then
+     begin
+-      assign(BillyFile,'br.BFB');
++      assign(BillyFile,'br.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'I''m not too sure about that...');
+       writeln(BillyFile,'Tell more, please!');
+@@ -64,21 +64,21 @@
+     end
+   else if FileName = 'IS1.BFB' then
+     begin
+-      assign(BillyFile,'is1.BFB');
++      assign(BillyFile,'is1.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'up ');
+       close(BillyFile);
+     end
+   else if FileName = 'IS2.BFB' then
+     begin
+-      assign(BillyFile,'is2.BFB');
++      assign(BillyFile,'is2.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'not too much, really! ');
+       close(BillyFile);
+     end
+   else if FileName = 'IS3.BFB' then
+     begin
+-      assign(BillyFile,'is3.BFB');
++      assign(BillyFile,'is3.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'***');
+       close(BillyFile);
+@@ -101,13 +101,13 @@
+     end
+   else if FileName = 'SR.BFB' then
+     begin
+-      assign(BillyFile,'sr.BFB');
++      assign(BillyFile,'sr.bfb');
+       rewrite(BillyFile);
+       close(BillyFile);
+     end
+   else if FileName = 'SENT.BFB' then
+     begin
+-      assign(BillyFile,'sent.BFB');
++      assign(BillyFile,'sent.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'Can I have your ');
+       writeln(BillyFile,'?');
+@@ -187,7 +187,7 @@
+       rewrite(BillyFile);
+       writeln(BillyFile,'2');
+       writeln(BillyFile,'0');
+-      writeln(BillyFile,'BILLY.EXE');
++      writeln(BillyFile,'billy');
+       writeln(BillyFile,'Billy');
+       writeln(BillyFile,'0');
+       close(BillyFile);
+@@ -285,7 +285,7 @@
+   if upcase(YN) = 'Y' then
+     begin
+       write('BILLY.TXT...');
+-      InitFile('BILLY.TXT');
++      InitFile('billy.txt');
+       writeln('!');
+     end;
+   end;
+@@ -296,4 +296,4 @@
+ 
+ begin
+   run;
+-end.
+\ No newline at end of file
++end.
+--- s/link.pas	2003-08-08 11:28:08.000000000 -0500
++++ link.pas	2010-12-24 13:57:57.557826694 -0600
+@@ -53,7 +53,7 @@
+ begin
+   {$M $4000,0,0 }
+   GetDir(0,CurDir);
+-  curdir := curdir + '\';
++  curdir := curdir + '/';
+   textbackground(1);
+   clrscr;
+   gotoxy(1,1);
+@@ -64,10 +64,10 @@
+   textcolor(7);
+   write('Enter path to bot #1: ');
+   readln(Path1);
+-  if Path1[length(Path1)] <> '\' then Path1 := Path1 + '\';
++  if Path1[length(Path1)] <> '/' then Path1 := Path1 + '/';
+   write('Enter path to bot #2: ');
+   readln(Path2);
+-  if Path2[length(Path2)] <> '\' then Path2 := Path2 + '\';
++  if Path2[length(Path2)] <> '/' then Path2 := Path2 + '/';
+   randomize;
+   Col1 := random(15) + 1;
+   Col2 := random(15) + 1;
+@@ -121,7 +121,7 @@
+     writeln(LoadFile,Col1);
+     close(LoadFile);
+     swapvectors;
+-    exec(CurDir+'writer.exe','');
++    exec(CurDir+'writer','');
+     swapvectors;
+ 
+     erase(LoadFile);
+@@ -148,7 +148,7 @@
+     writeln(LoadFile,Col2);
+     close(LoadFile);
+     swapvectors;
+-    exec(CurDir+'writer.exe','');
++    exec(CurDir+'writer','');
+     swapvectors;
+ 
+     erase(LoadFile);
+@@ -169,4 +169,4 @@
+ (***********************************************************)
+ begin
+   run
+-end.
+\ No newline at end of file
++end.

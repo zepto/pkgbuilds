@@ -1,0 +1,45 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=edax
+pkgver=4.0.5
+pkgrel=1
+pkgdesc="State of the art Othello engine"
+arch=(i686)
+url="http://abulmo.perso.neuf.fr/edax/4.0/edax.htm"
+depends=(bash)
+license=('GPL3')
+source=("http://abulmo.perso.neuf.fr/edax/4.0/$pkgname.4-0-5.zip")
+md5sums=('e2d5972ac4734963c4eee8f3b9929337')
+sha256sums=('30c14aa5deb6d2ba40256c35886b2cb79bb0f01d4b8f22420758b9b1c3368467')
+
+build() {
+  cd "$srcdir/$pkgname/4.0/src"
+
+  rm -rf ../bin/{lEdax,mEdax,*.dll,*.txt,wEdax*}
+
+  make linux-gcc-x86
+}
+
+package() {
+  cd "$srcdir/$pkgname/"
+
+  sed -i 's_\(cd.*\)$_#\1_g' gtp.sh
+  sed -i 's_\./lEdax_lEdax_g' gtp.sh
+  install -dm755 $pkgdir/usr/{bin,share/edax}
+  cp -R * $pkgdir/usr/share/edax
+  find $pkgdir -type f -exec chmod -x '{}' \;
+  chmod +x $pkgdir/usr/share/edax/4.0/bin/lEdax-x86
+  cat <<-EOF > $pkgdir/usr/bin/lEdax
+#!/bin/bash
+if [[ ! -d $HOME/.edax ]]
+then
+  mkdir -p $HOME/.edax
+  cp -r /usr/share/edax/4.0/bin/data $HOME/.edax
+fi
+pushd $HOME/.edax
+/usr/share/edax/4.0/bin/lEdax-x86 "\$@"
+popd
+EOF
+  chmod +x $pkgdir/usr/bin/lEdax
+}
+
+# vim:set ts=2 sw=2 et:

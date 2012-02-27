@@ -1,0 +1,15 @@
+2011-05-15 Josiah Gordon <josiahg@gmail.com>
+
+	* 0.6.5-1 :
+	Uses python3 and gobject introspection
+
+2009-10-19 Josiah Gordon <josiahg@gmail.com>
+
+	* 0.6.4-1 :
+	Uses python2
+
+2009-03-30 Josiah Gordon <josiahg@gmail.com>
+
+	* 0.6.3-1 :
+	initial release
+

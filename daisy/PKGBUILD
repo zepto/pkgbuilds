@@ -1,0 +1,53 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=daisy
+pkgver=1.1
+pkgrel=2
+pkgdesc="A project in pursuit of artificial intelligence."
+arch=(i686 x86_64)
+url="http://leedberg.com/glsoft/daisy/"
+license=('GPL')
+makedepends=(fpc)
+source=(http://leedberg.com/glsoft/daisy/archive/daisy11.zip
+        daisy_linux.patch
+        daisy.sh)
+md5sums=('2fdb5d61dc8bcffb022b794683b55b53'
+         'dbe7b7a8ebe7c1fd77b57a05c37bb44b'
+         '20cdc05a18f218aeda40adc851e22e71')
+sha256sums=('2260c25a3ec2bf53153389cefef10d3b6627ad477f942c1ca1a7bc208846b908'
+            'ca7613a9985b323e6128e713d1897237ec73c2ae8ed3cfab8574e6c17d915bf8'
+            '9469df544197d68df0c35de342befe79c6c52689a54e176d5ab313054604fd47')
+
+build() {
+  cd "$srcdir/$pkgname11"
+
+  mkdir source
+  unzip -d source source.zip
+  cd source
+  for i in *
+  do
+    typeset -l l=$i
+    [[ $i != $l ]] && mv $i $l
+  done
+  patch -p0 < $srcdir/daisy_linux.patch
+  for i in *.pas; do fpc -Mtp -O2 $i; done
+}
+
+package() {
+  cd "$srcdir/$pkgname11"
+
+  cd source
+  install -dm755 "$pkgdir"/usr/{share/$pkgname,bin}
+  install -Dm755 daisy "$pkgdir"/usr/share/$pkgname/daisy
+  install -Dm755 link "$pkgdir"/usr/share/$pkgname/link
+  install -Dm755 init "$pkgdir"/usr/share/$pkgname/init
+  install -Dm755 writer "$pkgdir"/usr/share/$pkgname/writer
+  install -Dm644 license.txt "$pkgdir"/usr/share/$pkgname/license.txt
+
+  install -Dm755 "$srcdir"/daisy.sh "$pkgdir"/usr/share/$pkgname/daisy.sh
+  ln -s /usr/share/$pkgname/daisy.sh "$pkgdir"/usr/bin/daisy
+
+  install -Dm644 ../source.zip "$pkgdir"/usr/share/$pkgname/source.zip
+  install -Dm644 ../manual.txt "$pkgdir"/usr/share/$pkgname/manual.txt
+}
+
+# vim:set ts=2 sw=2 et:

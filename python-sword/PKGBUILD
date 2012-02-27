@@ -1,0 +1,37 @@
+# Contributor: Dale Ogilvie <pnyli0002@sneakemail.com>
+
+pkgname=python-sword
+pkgver=1.6.2
+pkgrel=6
+pkgdesc="Python bindings for SWORD"
+arch=(i686 x86_64)
+url="http://www.crosswire.org/sword/index.jsp"
+license="GPL"
+options=()
+depends=('python' 'sword')
+makedepends=('python' 'swig' 'sword')
+source=(http://www.crosswire.org/ftpmirror/pub/sword/source/v1.6/sword-${pkgver}.tar.gz python3_m4.patch)
+md5sums=('a7dc4456e20e915fec46d774b690e305'
+         '04913730fbc9dfd4a06d6b6efbdcaf9f')
+
+build() {
+  cd $startdir/src/sword-${pkgver}
+  # assume sword built with lucene and icu
+  #./configure --prefix=/usr --sysconfdir=/etc --with-lucene --with-icu
+  cd bindings/swig/package
+  sed -i 's/1\.5\.[[:alnum:]]*/1\.6\.2/g' configure.ac
+  patch -p0 < $startdir/src/python3_m4.patch
+  sed -i 's_$(SWIG) -python_& -py3_' Makefile.am
+
+  libtoolize --force
+  ./autogen.sh
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make pythonswig
+  make python_make
+}
+
+package() {
+  cd $startdir/src/sword-${pkgver}
+  cd bindings/swig/package/python
+  python setup.py install --root=$startdir/pkg
+}

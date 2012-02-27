@@ -1,0 +1,30 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=python2-pyaudiality
+pkgver=0.0.3
+pkgrel=2
+pkgdesc="Python wrapper for the audiality library"
+arch=(i686)
+url="lime.tree"
+license=('GPL3')
+replaces=('pyaudiality-python2')
+conflicts=('pyaudiality-python2')
+depends=(audiality python2)
+makedepends=(python2 swig audiality)
+source=($pkgname-$pkgver.tar.xz)
+md5sums=('234867380318354a4d1ee9e90557df55')
+sha256sums=('d8e44f5dd0d254e8d9905c01873865a0241a192423928d2b6d702ff292795f7e')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  python2 setup.py install --prefix=/usr --root="$pkgdir/"
+  install -D -m 644 license.txt "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+  install -d -m 755 "$pkgdir/usr/share/doc/$pkgname-$pkgver/"
+  cp -r test "$pkgdir/usr/share/doc/$pkgname-$pkgver/"
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,42 @@
+# $Id: PKGBUILD 142931 2011-11-18 13:13:31Z stephane $
+# Maintainer: Stéphane Gaudreault <stephane@archlinux.org>
+# Contributor: Alexander Fehr <pizzapunk gmail com>
+
+pkgbase=pylint
+pkgname=pylint3
+pkgver=0.25.1
+pkgrel=1
+pkgdesc="Analyzes Python code looking for bugs and signs of poor quality"
+arch=('any')
+url="http://www.logilab.org/project/pylint"
+license=('GPL')
+depends=('python-logilab-astng' 'python')
+makedepends=('python-distribute')
+optdepends=('tk: Pylint GUI')
+source=("http://ftp.logilab.org/pub/${pkgbase}/${pkgbase}-${pkgver}.tar.gz")
+sha1sums=('e567fde28a2135888b137f7dcdfa72abd06d3896')
+
+build() {
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+
+  #sed -i "s|/usr/bin/env python|/usr/bin/env python2|" epylint.py
+
+  python setup.py build 
+}
+
+
+package() {
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+
+  NO_SETUPTOOLS=1  python setup.py install --prefix=/usr --root="${pkgdir}" --no-compile
+
+  install -d "${pkgdir}/usr/share/man/man1"
+  install -m644 man/* "${pkgdir}/usr/share/man/man1"
+  for file in $(find "${pkgdir}"/usr/bin -type f)
+  do
+      mv ${file} ${file}3
+      file_name=$(basename $file)
+      mv "${pkgdir}"/usr/share/man/man1/{"${file_name}".1,"${file_name}3".1}
+  done
+}
+

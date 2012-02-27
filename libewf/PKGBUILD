@@ -1,0 +1,26 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=libewf
+pkgver=20080501
+pkgrel=1
+pkgdesc="Library for the Expert Witness Compression Format (EWF)"
+arch=(i686)
+url="http://libewf.sourceforge.net/"
+license=('BSD')
+depends=(e2fsprogs zlib openssl)
+makedepends=()
+provides=(libewf)
+install=$pkgname.install
+source=($pkgname-$pkgver.tar.gz)
+md5sums=('be28a11d32ca72c328b081d38849d5bd')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure --prefix=/usr --datadir=/usr/share --mandir=/usr/share/man --bindir=/usr/bin --includedir=/usr/include --libdir=/usr/lib --enable-wide-character-type
+  make || return 1
+  make DESTDIR="$pkgdir/" install
+  rm -f "$pkgdir/usr/lib/libewf.la"
+  install -D -m 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:

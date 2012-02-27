@@ -1,0 +1,25 @@
+# $Id: PKGBUILD,v 1.3 2009/02/07 08:49:35 abhidg Exp $
+# Contributor: Geoffroy Carrier <geoffroy.carrier@koon.fr>
+pkgname=sleuthkit-afflib
+pkgver=3.0.1
+pkgrel=2
+pkgdesc='File system and media management forensic analysis tools (supports NTFS, FAT, UFS1/2, FFS, Ext2 and Ext3)'
+url='http://www.sleuthkit.org/sleuthkit'
+arch=('i686' 'x86_64')
+license=('GPL2' 'CPL' 'custom:"IBM Public Licence"')
+depends=(afflib libewf)
+provides=(sleuthkit sleuthkit-afflib)
+replaces=(sleuthkit)
+source=(http://downloads.sourceforge.net/sourceforge/$pkgname/sleuthkit-$pkgver.tar.gz)
+build() {
+  cd "$srcdir/sleuthkit-$pkgver"
+  ./configure --prefix=/usr --mandir=/usr/share/man --enable-afflib --enable-ewf || return 1
+  make || return 1
+  make DESTDIR=$pkgdir install || return 1
+
+  find "$pkgdir" -name '*.la' -exec rm -f {} ';'
+
+  install -d "$pkgdir/usr/share/licenses/$pkgname"
+  cp licenses/* "$pkgdir/usr/share/licenses/$pkgname"
+}
+md5sums=('55956dd3bbfa6c9e2ebcc685c2a9569d')

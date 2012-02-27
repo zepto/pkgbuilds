@@ -1,0 +1,36 @@
+--- fbpdf.c.orig	2010-12-19 15:52:57.426606567 -0600
++++ fbpdf.c	2010-12-19 15:53:23.133839552 -0600
+@@ -20,9 +20,9 @@
+ 
+ #define PAGESTEPS		8
+ #define CTRLKEY(x)		((x) - 96)
+-#define MAXWIDTH		2
++#define MAXWIDTH		3
+ #define MAXHEIGHT		3
+-#define PDFCOLS			(1 << 11)
++#define PDFCOLS			(1 << 12)
+ #define PDFROWS			(1 << 12)
+ 
+ static fbval_t pbuf[PDFROWS * PDFCOLS];
+@@ -84,8 +84,8 @@
+ 	fz_freedevice(dev);
+ 
+ 	for (y = 0; y < MIN(pix->h, PDFROWS); y++) {
+-		for (x = 0; x < MIN(pix->w, PDFCOLS); x++) {
+-			unsigned char *s = pix->samples + y * pix->w * 4 + x * 4;
++		for (x = 0; x < MIN((pix->w * 2), PDFCOLS); x++) {
++			unsigned char *s = pix->samples + y * pix->w * 4 + x * 2;
+ 			pbuf[y * PDFCOLS + x] = fb_color(s[0], s[1], s[2]);
+ 
+ 		}
+--- draw.c.orig	2010-12-19 15:54:27.258585600 -0600
++++ draw.c	2010-12-19 15:55:15.679652415 -0600
+@@ -10,7 +10,7 @@
+ 
+ #define FBDEV_PATH	"/dev/fb0"
+ #define MAXFBWIDTH	(1 << 12)
+-#define BPP		sizeof(fbval_t)
++#define BPP		vinfo.bits_per_pixel / 8 //sizeof(fbval_t)
+ #define NLEVELS		(1 << 8)
+ 
+ static int fd;

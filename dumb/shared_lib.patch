@@ -1,0 +1,71 @@
+--- dumb-0.9.3/make/Makefile.inc	2005-08-07 19:18:40.000000000 -0500
++++ make/Makefile.inc	2010-11-09 14:08:30.813708007 -0600
+@@ -35,5 +35,11 @@
+ $(CORE_LIB_FILE): $(CORE_OBJECTS)
+ 	$(AR) rs $@ $^
+ 
++$(CORE_SHARED_LIB_FILE): $(CORE_OBJECTS)
++	$(CC) -shared $^ -o $@
++
+ $(ALLEGRO_LIB_FILE): $(ALLEGRO_OBJECTS)
+ 	$(AR) rs $@ $^
++
++$(ALLEGRO_SHARED_LIB_FILE): $(ALLEGRO_OBJECTS)
++	$(CC) --shared $^ -o $@
+--- dumb-0.9.3/Makefile.rdy	2005-08-07 19:18:39.000000000 -0500
++++ Makefile.rdy	2010-11-09 14:14:24.000791703 -0600
+@@ -245,14 +245,18 @@
+ 
+ 
+ CORE_LIB_FILE_RELEASE := $(LIBDIR)/libdumb.a
++CORE_SHARED_LIB_FILE_RELEASE := $(LIBDIR)/libdumb.so
+ ALLEGRO_LIB_FILE_RELEASE := $(LIBDIR)/libaldmb.a
++ALLEGRO_SHARED_LIB_FILE_RELEASE := $(LIBDIR)/libaldmb.so
+ 
+ CORE_LIB_FILE_DEBUG := $(LIBDIR)/libdumbd.a
++CORE_SHARED_LIB_FILE_DEBUG := $(LIBDIR)/libdumbd.so
+ ALLEGRO_LIB_FILE_DEBUG := $(LIBDIR)/libaldmd.a
++ALLEGRO_SHARED_LIB_FILE_DEBUG := $(LIBDIR)/libaldmd.so
+ 
+ 
+-core: $(CORE_LIB_FILE_RELEASE) $(CORE_LIB_FILE_DEBUG)
+-allegro: $(ALLEGRO_LIB_FILE_RELEASE) $(ALLEGRO_LIB_FILE_DEBUG)
++core: $(CORE_LIB_FILE_RELEASE) $(CORE_LIB_FILE_DEBUG) $(CORE_SHARED_LIB_FILE_RELEASE) $(CORE_SHARED_LIB_FILE_DEBUG)
++allegro: $(ALLEGRO_LIB_FILE_RELEASE) $(ALLEGRO_LIB_FILE_DEBUG) $(ALLEGRO_SHARED_LIB_FILE_RELEASE) $(ALLEGRO_SHARED_LIB_FILE_DEBUG)
+ 
+ core-examples: $(CORE_EXAMPLES_EXE)
+ allegro-examples: $(ALLEGRO_EXAMPLES_EXE)
+@@ -263,11 +267,15 @@
+ 
+ install-core: core
+ 	$(call COPY,$(CORE_LIB_FILE_RELEASE),$(LIB_INSTALL_PATH))
++	$(call COPY,$(CORE_SHARED_LIB_FILE_RELEASE),$(LIB_INSTALL_PATH))
+ 	$(call COPY,$(CORE_LIB_FILE_DEBUG),$(LIB_INSTALL_PATH))
++	$(call COPY,$(CORE_SHARED_LIB_FILE_DEBUG),$(LIB_INSTALL_PATH))
+ 
+ install-allegro: allegro
+ 	$(call COPY,$(ALLEGRO_LIB_FILE_RELEASE),$(LIB_INSTALL_PATH))
++	$(call COPY,$(ALLEGRO_SHARED_LIB_FILE_RELEASE),$(LIB_INSTALL_PATH))
+ 	$(call COPY,$(ALLEGRO_LIB_FILE_DEBUG),$(LIB_INSTALL_PATH))
++	$(call COPY,$(ALLEGRO_SHARED_LIB_FILE_DEBUG),$(LIB_INSTALL_PATH))
+ 
+ ifeq "$(COMSPEC)" ""
+ install-core-examples: core-examples
+@@ -318,13 +326,17 @@
+ OBJDIR := $(OBJDIR_BASE)/release
+ CFLAGS := $(CFLAGS_RELEASE)
+ CORE_LIB_FILE := $(LIBDIR)/libdumb.a
++CORE_SHARED_LIB_FILE := $(LIBDIR)/libdumb.so
+ ALLEGRO_LIB_FILE := $(LIBDIR)/libaldmb.a
++ALLEGRO_SHARED_LIB_FILE := $(LIBDIR)/libaldmb.so
+ include make/Makefile.inc
+ 
+ OBJDIR := $(OBJDIR_BASE)/debug
+ CFLAGS := $(CFLAGS_DEBUG)
+ CORE_LIB_FILE := $(LIBDIR)/libdumbd.a
++CORE_SHARED_LIB_FILE := $(LIBDIR)/libdumbd.so
+ ALLEGRO_LIB_FILE := $(LIBDIR)/libaldmd.a
++ALLEGRO_SHARED_LIB_FILE := $(LIBDIR)/libaldmd.so
+ include make/Makefile.inc
+ 
+ 

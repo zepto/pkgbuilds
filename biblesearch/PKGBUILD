@@ -1,0 +1,23 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=biblesearch
+pkgver=1.0.2
+pkgrel=1
+pkgdesc="A python sword bible indexer and searcher."
+arch=(any)
+url="lime.tree"
+license=('GPL3')
+depends=(python python-sword)
+options=()
+source=($pkgname.py)
+md5sums=('d6f31d17322c80bf7b13634eef416953')
+sha256sums=('310ea1e79828823210c3456257883976c6c02da9db881dfb1e0e6fb3e6b356f1')
+
+build() {
+  python=$(which python)
+  cd "$srcdir"
+
+  install -d "$pkgdir/usr/bin"
+  install -D -m 755 $pkgname.py "$pkgdir/usr/bin/biblesearch"
+}
+
+# vim:set ts=2 sw=2 et:

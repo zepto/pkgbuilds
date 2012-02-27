@@ -1,0 +1,13 @@
+--- a/rope/base/builtins.py	2011-08-06 17:26:01.551268025 +0430
++++ b/rope/base/builtins.py	2011-08-06 17:26:44.901331605 +0430
+@@ -123,7 +123,9 @@
+     for name in dir(obj):
+         if name == 'None':
+             continue
+-        child = getattr(obj, name)
++        child = getattr(obj, name, None)
++        if child is None:
++        	continue
+         pyobject = None
+         if inspect.isclass(child):
+             pyobject = BuiltinClass(child, {}, parent=parent)

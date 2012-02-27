@@ -1,0 +1,56 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=fbpdf-git
+pkgver=20110123
+pkgrel=1
+pkgdesc="a small framebuffer pdf viewer"
+arch=(i686 x86_64)
+url="http://repo.or.cz/w/fbpdf.git"
+license=('GPL')
+depends=('mupdf')
+makedepends=('git')
+provides=('fbpdf')
+conflicts=('fbpdf')
+source=(fbpdf_32bit.patch fbpdf_fix.patch clear_screen.patch)
+md5sums=('14b4b7ef9f90b4b76fa71096cd2387fb'
+         '46f63952845dd111fb55d35311af09c5'
+         '0cebe51d60255ce9d9311b704a20561e')
+sha256sums=('c8e28dca806dbd98e553eea9ac4642fc91db028c5a2fa9aa36b560c2f3c63731'
+            '885b888094cc44edb3a5185a8dba0b13b36257e27dbab270cbd9957346e7073f'
+            '9e9abfc5db99b3ac456a156bd71c14876f8f28ee99b601d2c25ca25c8b00f7b4')
+
+_gitroot="git://repo.or.cz/fbpdf.git"
+_gitname="fbpdf"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+
+  #patch -p0 < ../fbpdf_fix.patch
+  patch -p0 < ../clear_screen.patch
+  make
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+
+  install -dm755 $pkgdir/usr/bin
+  install -m755 fbpdf $pkgdir/usr/bin
+} 

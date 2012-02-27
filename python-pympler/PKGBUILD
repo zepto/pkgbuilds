@@ -1,0 +1,30 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# See http://wiki.archlinux.org/index.php/Python_Package_Guidelines for more
+# information on Python packaging.
+
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=python-pympler
+_pkgbase=Pympler
+pkgver=0.2.1
+pkgrel=1
+pkgdesc="A development tool to measure, monitor and analyze the memory behavior of Python objects"
+arch=('any')
+url="http://pypi.python.org/pypi/Pympler"
+groups=()
+license=('Apache')
+depends=('python')
+makedepends=('python')
+options=(!emptydirs)
+source=('http://pypi.python.org/packages/source/P/Pympler/Pympler-0.2.1.tar.gz')
+md5sums=('e97d4a105186247e8c06c7dacea3d9f0')
+
+package() {
+  cd "$srcdir/$_pkgbase-$pkgver"
+  python setup.py install --root="$pkgdir/" --optimize=1
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,32 @@
+# $Id: PKGBUILD 142929 2011-11-18 13:09:57Z stephane $
+# Maintainer: Stéphane Gaudreault <stephane@archlinux.org>
+# Contributor: Alexander Fehr <pizzapunk gmail com>
+
+pkgname=python3-logilab-astng
+pkgver=0.23.1
+pkgrel=1
+pkgdesc="Extend python's abstract syntax tree"
+arch=('any')
+url="http://www.logilab.org/project/logilab-astng"
+license=('LGPL')
+depends=('python3-logilab-common')
+makedepends=('python-distribute')
+source=(ftp://ftp.logilab.org/pub/astng/logilab-astng-${pkgver}.tar.gz)
+sha1sums=('cc72ecda206f03df14401f26da4e8806066d3aaf')
+
+build() {
+  cd "${srcdir}/logilab-astng-${pkgver}"
+
+  sed -i 's/\<file(/open(/g' scoped_nodes.py
+
+  python setup.py build
+}
+
+package() {
+  cd "${srcdir}/logilab-astng-${pkgver}"
+
+  python setup.py install --prefix=/usr --root="${pkgdir}" --skip-build --optimize=1
+
+  # Resolve conflict with python-logilab-common
+  rm -f "${pkgdir}/usr/lib/python3.2/site-packages/logilab/__init__.py"
+}

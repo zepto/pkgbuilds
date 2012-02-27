@@ -1,0 +1,56 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=billy
+pkgver=2.21
+pkgrel=2
+pkgdesc="A project in pursuit of artificial intelligence."
+arch=(i686 x86_64)
+url="http://leedberg.com/glsoft/billy/"
+license=('GPL')
+makedepends=(fpc)
+source=(http://leedberg.com/glsoft/billy/archive/billy221.zip
+        billy_linux.patch
+        billy_linux2.patch
+        billy.sh)
+md5sums=('039080a252769a7c3349a0f05a1670fd'
+         'fbb85d9df932f07e04627e64f37d43f9'
+         '36d8c97117df4ae875139e03a02de92b'
+         '7d5ac71ee18c5ba855c8a03a1e1b1355')
+sha256sums=('06dbe5b00d080670700023d57bb584594040a647ff5129c22a01d54ac56204ca'
+            '1b9a5358a939ea695242ff4ab88b6ab14512f612917027ce579e1bcb6883b783'
+            '382f0d33e729f70871670562216629451413dc71975b76646b8bf13f284d2136'
+            'd41f0395f3a775150418721528be0be051f4e874c79740582a7f5516a6803739')
+
+build() {
+  cd "$srcdir/$pkgname221"
+
+  mkdir source
+  unzip -d source source.zip
+  cd source
+  for i in *
+  do
+    typeset -l l=$i
+    [[ $i != $l ]] && mv $i $l
+  done
+  patch -p0 < $srcdir/billy_linux2.patch
+  for i in *.pas; do fpc -Mtp -O2 $i; done
+}
+
+package() {
+  cd "$srcdir/$pkgname221"
+
+  cd source
+  install -dm755 "$pkgdir"/usr/{share/$pkgname,bin}
+  install -Dm755 billy "$pkgdir"/usr/share/$pkgname/billy
+  install -Dm755 link "$pkgdir"/usr/share/$pkgname/link
+  install -Dm755 init "$pkgdir"/usr/share/$pkgname/init
+  install -Dm755 writer "$pkgdir"/usr/share/$pkgname/writer
+  install -Dm644 license.txt "$pkgdir"/usr/share/$pkgname/license.txt
+
+  install -Dm755 "$srcdir"/billy.sh "$pkgdir"/usr/share/$pkgname/billy.sh
+  ln -s /usr/share/$pkgname/billy.sh "$pkgdir"/usr/bin/billy
+
+  install -Dm644 ../source.zip "$pkgdir"/usr/share/$pkgname/source.zip
+  install -Dm644 ../readme.txt "$pkgdir"/usr/share/$pkgname/readme.txt
+}
+
+# vim:set ts=2 sw=2 et:

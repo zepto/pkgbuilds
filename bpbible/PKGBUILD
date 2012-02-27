@@ -1,0 +1,39 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=bpbible
+pkgver=0.4.7
+pkgrel=1
+pkgdesc="A flexible Bible Study tool. It is designed to be easy to use."
+arch=(any)
+url="http://bpbible.com"
+license=('GPL2')
+depends=(python2-sword python2 python-pysqlite wxpython)
+source=(http://bpbible.googlecode.com/files/$pkgname-$pkgver-src.zip 
+        bpbible.launcher bpbible.desktop bpbible_sqlite.patch)
+md5sums=('1864551408e5eb74181669b529b20e30'
+         '894734b8556acc41a6f4075a113018a1'
+         '22bedbde0f11076298a257960af4466e'
+         '69312dfc348f6dc0f53ef6dabcdc56ea')
+
+build() {
+  cd "$srcdir"
+}
+
+package() {
+  cd "$srcdir"
+
+  install -dm755 "$pkgdir/usr/share"
+  bsdtar -xvof $pkgname-$pkgver-src.zip -C "$pkgdir/usr/share" || return 1
+  pushd "$pkgdir/usr/share/$pkgname-$pkgver"
+  patch -p0 < "$srcdir/bpbible_sqlite.patch"
+  popd
+  install -Dm755 bpbible.launcher "$pkgdir/usr/bin/bpbible"
+  install -Dm644 bpbible.desktop "$pkgdir/usr/share/applications/bpbible.desktop"
+
+  msg2 "Fixing permissions..."
+  find "$pkgdir/usr/share/$pkgname-$pkgver" -type d -exec chmod 755 '{}' \;
+  find "$pkgdir/usr/share/$pkgname-$pkgver" -type f -exec chmod 644 '{}' \;
+
+  install -D -m 644 $srcdir/$pkgname-$pkgver/LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:

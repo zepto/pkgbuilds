@@ -1,0 +1,24 @@
+--- python.m4.orig	2010-10-24 09:55:28.641922825 -0500
++++ python.m4	2010-10-24 10:29:50.166334503 -0500
+@@ -45,10 +45,10 @@
+ 
+ if test -n "$PYTHON"; then
+     AC_MSG_CHECKING(for Python prefix)
+-    PYPREFIX=`($PYTHON -c "import sys; print sys.prefix") 2>/dev/null`
++    PYPREFIX=`($PYTHON -c "import sys; print(sys.prefix)") 2>/dev/null`
+     AC_MSG_RESULT($PYPREFIX)
+     AC_MSG_CHECKING(for Python exec-prefix)
+-    PYEPREFIX=`($PYTHON -c "import sys; print sys.exec_prefix") 2>/dev/null`
++    PYEPREFIX=`($PYTHON -c "import sys; print(sys.exec_prefix)") 2>/dev/null`
+     AC_MSG_RESULT($PYEPREFIX)
+ 
+ 
+@@ -59,7 +59,7 @@
+ 
+     # Need to do this hack since autoconf replaces __file__ with the name of the configure file
+     filehack="file__"
+-    PYVERSION=`($PYTHON -c "import string,operator; print operator.getitem(string.split(string.__$filehack,'/'),-2)")`
++    PYVERSION=`($PYTHON -c "import string,operator; print(operator.getitem(string.__$filehack.split('/'),-2))")`
+     AC_MSG_RESULT($PYVERSION)
+ 
+     # Set the include directory

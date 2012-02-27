@@ -1,0 +1,33 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=python-pydumb
+pkgver=0.1.8
+pkgrel=1
+pkgdesc="Python wrapper for the dumb library."
+arch=(i686)
+license=('GPL3')
+depends=(python)
+makedepends=(dumb python swig)
+optdepends=()
+provides=()
+replaces=(pydumb)
+conflicts=(pydumb)
+options=()
+install=
+source=($pkgname-$pkgver.tar.xz)
+noextract=()
+md5sums=('1a7054d98d4e01e7a690002add28846d')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  python setup.py install --prefix=/usr --root="$pkgdir/"
+  install -D -m 644 license.txt "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+  install -d -m 755 "$pkgdir/usr/share/doc/$pkgname-$pkgver/"
+  cp -r test "$pkgdir/usr/share/doc/$pkgname-$pkgver/"
+}
+
+# vim:set ts=2 sw=2 et:

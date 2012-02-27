@@ -1,0 +1,38 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=perceptualdiff
+pkgver=1.1.1
+pkgrel=1
+epoch=1
+pkgdesc="Compares images based on the perceived differance."
+arch=(i686 x86_64)
+url="http://sourceforge.net/projects/pdiff/"
+license=('GPL2')
+depends=(freeimage)
+makedepends=(freeimage cmake)
+provides=(pdiff)
+#install=
+#changelog=
+source=(http://downloads.sourceforge.net/project/pdiff/pdiff/$pkgname-$pkgver/$pkgname-$pkgver-src.tar.gz)
+noextract=($pkgname-$pkgver-src.tar.gz)
+md5sums=('8fbd197a4be33fc116e26478c1ff8ce7')
+sha256sums=('ab349279a63018663930133b04852bde2f6a373cc175184b615944a10c1c7c6a')
+
+build() {
+  cd "$srcdir"
+  mkdir "$pkgname-$pkgver"
+  tar -xzf $pkgname-$pkgver-src.tar.gz -C "$pkgname-$pkgver"
+  cd "$srcdir/$pkgname-$pkgver"
+
+  sed -i 's/<math\.h>/<math\.h>\n#include <stdio.h>/g' Metric.cpp
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_EXE_LINKER_FLAGS=-lfreeimage -DCMAKE_INSTALL_PREFIX=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver/build"
+  make DESTDIR="$pkgdir/" install
+}
+
+# vim:set ts=2 sw=2 et:

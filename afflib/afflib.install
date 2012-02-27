@@ -1,0 +1,17 @@
+## arg 1:  the new package version
+post_install() {
+  /sbin/ldconfig
+}
+
+## arg 1:  the new package version
+## arg 2:  the old package version
+post_upgrade() {
+  /sbin/ldconfig
+}
+
+## arg 1:  the old package version
+post_remove() {
+  /sbin/ldconfig
+}
+
+# vim:set ts=2 sw=2 et:

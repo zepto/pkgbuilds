@@ -1,0 +1,28 @@
+# $Id: PKGBUILD 142927 2011-11-18 13:07:37Z stephane $
+# Maintainer: Stéphane Gaudreault <stephane@archlinux.org>
+# Contributor: Alexander Fehr <pizzapunk gmail com>
+
+pkgname=python3-logilab-common
+pkgver=0.57.1
+pkgrel=1
+pkgdesc="Useful miscellaneous modules used by Logilab projects"
+arch=('any')
+url="http://www.logilab.org/project/logilab-common"
+license=('LGPL')
+depends=('python')
+makedepends=('python-distribute')
+source=(http://ftp.logilab.org/pub/common/logilab-common-${pkgver}.tar.gz)
+sha1sums=('4538448dec42ea7dc40ff24c9066d187eab6f79c')
+
+build() {
+  cd "${srcdir}/logilab-common-${pkgver}"
+
+  python setup.py build
+}
+
+package() {
+  cd "${srcdir}/logilab-common-${pkgver}"
+
+  python setup.py install --optimize=1 --skip-build --prefix=/usr --root="${pkgdir}"
+  mv "${pkgdir}"/usr/bin/{pytest,pytest3}
+}

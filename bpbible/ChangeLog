@@ -1,0 +1,12 @@
+2010-03-20 Josiah Gordon <josiahg@gmail.com>
+
+	* 0.4.5-1 :
+	latest update
+
+2009-04-09 Josiah Gordon <josiahg@gmail.com>
+
+	* 0.4-2 :
+	patched to work around latest sqlite3 bug
+
+	* 0.4-1 :
+	first build

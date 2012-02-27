@@ -1,0 +1,67 @@
+--- fbpdf.c.orig	2010-12-20 10:31:41.224444459 -0600
++++ fbpdf.c	2010-12-20 10:33:53.094071257 -0600
+@@ -20,9 +20,9 @@
+ 
+ #define PAGESTEPS		8
+ #define CTRLKEY(x)		((x) - 96)
+-#define MAXWIDTH		2
++#define MAXWIDTH		3
+ #define MAXHEIGHT		3
+-#define PDFCOLS			(1 << 11)
++#define PDFCOLS			(1 << 12)
+ #define PDFROWS			(1 << 12)
+ 
+ static fbval_t pbuf[PDFROWS * PDFCOLS];
+@@ -84,8 +84,8 @@
+ 	fz_freedevice(dev);
+ 
+ 	for (y = 0; y < MIN(pix->h, PDFROWS); y++) {
+-		for (x = 0; x < MIN(pix->w, PDFCOLS); x++) {
+-			unsigned char *s = pix->samples + y * pix->w * 4 + x * 4;
++		for (x = 0; x < MIN((pix->w * 2), PDFCOLS); x++) {
++			unsigned char *s = pix->samples + y * pix->w * 4 + x * 2;
+ 			pbuf[y * PDFCOLS + x] = fb_color(s[0], s[1], s[2]);
+ 
+ 		}
+@@ -250,6 +250,7 @@
+ 	printinfo();
+ 	fb_init();
+ 	mainloop();
++       fb_clear_screen();
+ 	fb_free();
+ 	write(STDIN_FILENO, show, strlen(show));
+ 	printf("\n");
+--- draw.c.orig	2010-12-20 10:31:29.540848968 -0600
++++ draw.c	2010-12-20 10:33:06.263019760 -0600
+@@ -10,7 +10,7 @@
+ 
+ #define FBDEV_PATH	"/dev/fb0"
+ #define MAXFBWIDTH	(1 << 12)
+-#define BPP		sizeof(fbval_t)
++#define BPP		vinfo.bits_per_pixel / 8
+ #define NLEVELS		(1 << 8)
+ 
+ static int fd;
+@@ -117,6 +117,12 @@
+ 	memcpy(fb + loc, mem, len * BPP);
+ }
+ 
++void fb_clear_screen(void)
++{
++	memset(fb, 0, finfo.line_length * vinfo.yres);
++	printf("\033[H\033[J");
++}
++
+ void fb_free(void)
+ {
+ 	fb_cmap_save(0);
+--- draw.h.orig	2010-12-20 10:31:35.674319922 -0600
++++ draw.h	2010-12-20 10:32:03.138269542 -0600
+@@ -8,6 +8,7 @@
+ void fb_free(void);
+ fbval_t fb_color(unsigned char r, unsigned char g, unsigned char b);
+ void fb_set(int r, int c, fbval_t *mem, int len);
++void fb_clear_screen(void);
+ int fb_rows(void);
+ int fb_cols(void);
+ void fb_box(int sr, int sc, int er, int ec, fbval_t val);

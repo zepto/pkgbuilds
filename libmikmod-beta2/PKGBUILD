@@ -1,0 +1,43 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=libmikmod-beta2
+pkgver=3.2.0
+pkgrel=1
+pkgdesc="A portable sound library"
+license=('GPL' 'LGPL')
+url="http://sourceforge.net/projects/mikmod/"
+arch=('i686' 'x86_64')
+depends=('glibc' 'bash')
+options=('!libtool')
+replaces=('libmikmod')
+conflicts=('libmikmod')
+provides=('libmikmod')
+install=$pkgname.install
+source=(http://mikmod.raphnet.net/files/libmikmod-${pkgver}-beta2.tar.bz2
+        libmikmod-64bit.patch libmikmod-autoconf.patch libmikmod-esd.patch
+        libmikmod-info.patch libmikmod-multilib.patch libmikmod-strip-lib.patch
+        )
+md5sums=('5b05f3b1167eba7855b8e38bde2b8070'
+         'cdfaa5d57deca5325f22368f2fb397c9'
+         'bb330d55f1094f553a280e0b967f016c'
+         'b982fed8c441a2e6b87e84970a5f5114'
+         'a2131667d0f0296f65b086b694f8034c'
+         'df1b7f34c391b86e4faaed62fed3fed5'
+         '1cd97337f1119671ef965805dfd76b86')
+
+build() {
+  cd "$srcdir/libmikmod-$pkgver-beta2"
+  patch -Np1 -i $srcdir/libmikmod-64bit.patch
+  patch -Np1 -i $srcdir/libmikmod-esd.patch
+  patch -Np1 -i $srcdir/libmikmod-strip-lib.patch
+  patch -Np1 -i $srcdir/libmikmod-multilib.patch
+  patch -Np1 -i $srcdir/libmikmod-autoconf.patch
+  patch -Np1 -i $srcdir/libmikmod-info.patch
+  ./configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info
+  make || return 1
+  make DESTDIR=$pkgdir install
+
+  rm $pkgdir/usr/share/info/dir
+  gzip -9 $pkgdir/usr/share/info/mikmod.info
+}
+
+# vim:set ts=2 sw=2 et:

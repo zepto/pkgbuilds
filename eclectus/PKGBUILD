@@ -1,0 +1,26 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=eclectus
+pkgver=0.2beta2
+pkgrel=1
+pkgdesc="A small Han character dictionary."
+arch=(any)
+url="http://eclectus.googlecode.com/"
+license=('GPL3')
+depends=(python2 python2-sqlalchemy qt pyqt kdelibs kdebindings-python python-cjklib)
+source=("http://eclectus.googlecode.com/files/$pkgname-$pkgver.tar.gz")
+md5sums=('3645ef7a32f50cd58a5dc9536963302c')
+sha256sums=('d2c97a83e7ee4da54e70df7596fce72ddd5ef9b77fa9491c9fa264c956e48b27')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  python2 setup.py build
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  python2 setup.py install --root="$pkgdir"
+}
+
+# vim:set ts=2 sw=2 et:

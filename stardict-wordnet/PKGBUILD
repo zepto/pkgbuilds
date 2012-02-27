@@ -1,0 +1,21 @@
+# Contributor: Michal Karas <largon@largon.net>
+
+pkgname=stardict-wordnet
+pkgver=3.0.0
+pkgrel=1
+pkgdesc="WordNet dictionary for StarDict"
+arch=('i686' 'x86_64')
+depends=('stardict')
+url="http://stardict.sourceforge.net"
+license=('GPL')
+md5sums=('68fbf15064b79d7f5982ba8e3a23e4d4')
+source=(http://downloads.sourceforge.net/project/stardict/stardict-dict-special/$pkgver/stardict-wordnet-$pkgver.tar.bz2)
+
+build() {
+	cd $startdir/src/$pkgname-$pkgver/
+	mkdir -p $startdir/pkg/usr/share/stardict/dic/
+	install -m 644 wordnet.ifo \
+	               wordnet.idx \
+	               wordnet.dict.dz \
+	               $startdir/pkg/usr/share/stardict/dic/
+}

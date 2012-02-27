@@ -1,0 +1,52 @@
+# Contributor: Josiah
+pkgname=freebasic
+pkgver=0.23.0
+pkgrel=1
+pkgdesc="Free BASIC compiler"
+arch=('i686' 'x86_64')
+url="http://www.freebasic.net"
+license=('GPLv2')
+groups=('')
+depends=('allegro')
+provides=('freebasic-devel')
+#source=(FreeBASIC-v$pkgver-src.tar.gz FreeBASIC-v$pkgver-linux-standalone.tar.gz)
+#source=(FreeBASIC-$pkgver-source.tar.lzma FreeBASIC-$pkgver-linux.tar.lzma)
+source=(http://downloads.sourceforge.net/project/fbc/Source%20Code/FreeBASIC-$pkgver-source.tar.gz http://downloads.sourceforge.net/project/fbc/Binaries%20-%20Linux/FreeBASIC-$pkgver-linux-standalone.tar.gz)
+md5sums=('fffa035511fe55cc1a5e13d6a0e5cd32'
+         '0789747273bad417e11180505bddafb5')
+
+build() {
+  #tar --lzma -xf FreeBASIC-$pkgver-source.tar.lzma
+  #tar --lzma -xf FreeBASIC-$pkgver-linux.tar.lzma
+  #tar -xzf FreeBASIC-$pkgver-source.tar.gz
+  #tar -xzf FreeBASIC-$pkgver-linux-standalone.tar.gz
+  _prefix=/usr
+  allegver=$(allegro-config --version)
+  cd $startdir/src/FreeBASIC-$pkgver-source
+  #sed  -i "s|inclib "'"'"alleg"'"'"|inclib "'"'"alleg-$(allegro-config --version)"'"'"\n#inclib "'"'"alleg_unsharable"'"'"|g" inc/allegro/platform/alucfg.bi
+  cd FreeBASIC/src/rtlib/obj/linux
+  ../../configure --prefix=${_prefix}
+  make && make MULTITHREADED=1
+  make install
+
+  cd ../../../gfxlib2/obj/linux
+  ../../configure --prefix=${_prefix}
+  make
+  make install
+
+  cd ../../../compiler/obj/linux
+  ../../configure --prefix=${_prefix} FBC=../../../../../../FreeBASIC-$pkgver-linux-standalone/fbc
+  #mkdir -p lib/freebasic
+  #ln -s $(pwd)/../../../../lib/linux lib/freebasic/linux
+  #sed -i 's/\(FBC_LFLAGS :=.*\)/\1 -Wl -L${PWD}\/lib\/freebasic\/linux -prefix ${PWD}/g' Makefile
+  make
+  make install
+
+  cd ../../../../
+
+  rm -rf $pkgdir
+  mkdir -p $pkgdir/usr
+  sh install.sh -i $pkgdir/usr
+  mv $pkgdir/usr/man $pkgdir/usr/share
+}
+# vim: set ts=2 sw=2 et:

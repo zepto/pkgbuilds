@@ -1,0 +1,28 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=mac-robber
+pkgver=1.02
+pkgrel=1
+pkgdesc="Digital investigation tool for mounted file systems."
+arch=(i686 x86_64)
+url="http://www.sleuthkit.org/mac-robber/desc.php"
+license=('GPL')
+source=(http://downloads.sourceforge.net/project/$pkgname/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz)
+md5sums=('6d6d99aa882a46b2bc5231d195fdb595')
+sha256sums=('5895d332ec8d87e15f21441c61545b7f68830a2ee2c967d381773bd08504806d')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  install -dm755 $pkgdir/usr/{bin,share/$pkgname}
+  install -Dm755 $pkgname $pkgdir/usr/bin/$pkgname
+  install -Dm644 README $pkgdir/usr/share/$pkgname/README
+  install -Dm644 CHANGES $pkgdir/usr/share/$pkgname/CHANGES
+}
+
+# vim:set ts=2 sw=2 et:

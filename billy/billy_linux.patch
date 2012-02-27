@@ -1,0 +1,180 @@
+--- s/billy.pas	2003-08-08 11:19:14.000000000 -0500
++++ billy.pas	2010-12-23 21:35:40.962295350 -0600
+@@ -21,7 +21,7 @@
+     Any questions regarding what you may do with the software can be sent to
+     Greg Leedberg, at greg@leedberg.com.
+ 
+-    The full, unedited source follows. 
++    The full, unedited source follows.
+ }
+ 
+ { BILLY - v2.21 }
+@@ -1334,7 +1334,7 @@
+     begin
+       getdate(y,mo,d,dw);
+       gettime(h,mi,s,ss);
+-      assign(BillyFile,'BILLY.TXT');
++      assign(BillyFile,'billy.txt');
+       append(BillyFile);
+       writeln(BillyFile);
+       writeln(BillyFile,'***Transcript of ',Mo,'/',d,'/',y,'... starting at ',Time);
+@@ -1625,7 +1625,7 @@
+       writeln(LoadFile,FileName);
+       close(LoadFile);
+       swapvectors;
+-      exec('INIT.EXE','');
++      exec('init','');
+       swapvectors;
+       erase(LoadFile);
+       if IOResult <> 0 then
+@@ -1818,7 +1818,7 @@
+ 
+   if RecordT then
+     begin
+-      assign(BillyFile,'BILLY.TXT');
++      assign(BillyFile,'billy.txt');
+       append(BillyFile);
+     end;
+ 
+@@ -1861,7 +1861,7 @@
+         if UData.OUSerIn = '/init' then
+           begin
+             swapvectors;
+-            exec('INIT.EXE','');
++            exec('init','');
+             swapvectors;
+           end;
+ 
+@@ -2106,4 +2106,4 @@
+       clrscr;
+       textcolor(7);
+     end;
+-end.
+\ No newline at end of file
++end.
+--- s/init.pas	2003-08-08 11:19:34.000000000 -0500
++++ init.pas	2010-12-24 06:41:26.592736416 -0600
+@@ -47,7 +47,7 @@
+   FileName := ToUpper(FileName);
+   if FileName = 'BR.BFB' then
+     begin
+-      assign(BillyFile,'br.BFB');
++      assign(BillyFile,'br.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'I''m not too sure about that...');
+       writeln(BillyFile,'Tell more, please!');
+@@ -64,21 +64,21 @@
+     end
+   else if FileName = 'IS1.BFB' then
+     begin
+-      assign(BillyFile,'is1.BFB');
++      assign(BillyFile,'is1.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'up ');
+       close(BillyFile);
+     end
+   else if FileName = 'IS2.BFB' then
+     begin
+-      assign(BillyFile,'is2.BFB');
++      assign(BillyFile,'is2.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'not too much, really! ');
+       close(BillyFile);
+     end
+   else if FileName = 'IS3.BFB' then
+     begin
+-      assign(BillyFile,'is3.BFB');
++      assign(BillyFile,'is3.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'***');
+       close(BillyFile);
+@@ -101,13 +101,13 @@
+     end
+   else if FileName = 'SR.BFB' then
+     begin
+-      assign(BillyFile,'sr.BFB');
++      assign(BillyFile,'sr.bfb');
+       rewrite(BillyFile);
+       close(BillyFile);
+     end
+   else if FileName = 'SENT.BFB' then
+     begin
+-      assign(BillyFile,'sent.BFB');
++      assign(BillyFile,'sent.bfb');
+       rewrite(BillyFile);
+       writeln(BillyFile,'Can I have your ');
+       writeln(BillyFile,'?');
+@@ -187,7 +187,7 @@
+       rewrite(BillyFile);
+       writeln(BillyFile,'2');
+       writeln(BillyFile,'0');
+-      writeln(BillyFile,'BILLY.EXE');
++      writeln(BillyFile,'billy');
+       writeln(BillyFile,'Billy');
+       writeln(BillyFile,'0');
+       close(BillyFile);
+@@ -285,7 +285,7 @@
+   if upcase(YN) = 'Y' then
+     begin
+       write('BILLY.TXT...');
+-      InitFile('BILLY.TXT');
++      InitFile('billy.txt');
+       writeln('!');
+     end;
+   end;
+@@ -296,4 +296,4 @@
+ 
+ begin
+   run;
+-end.
+\ No newline at end of file
++end.
+--- s/link.pas	2003-08-08 11:28:08.000000000 -0500
++++ link.pas	2010-12-23 21:43:12.727578240 -0600
+@@ -53,7 +53,7 @@
+ begin
+   {$M $4000,0,0 }
+   GetDir(0,CurDir);
+-  curdir := curdir + '\';
++  curdir := curdir + '/';
+   textbackground(1);
+   clrscr;
+   gotoxy(1,1);
+@@ -64,10 +64,10 @@
+   textcolor(7);
+   write('Enter path to bot #1: ');
+   readln(Path1);
+-  if Path1[length(Path1)] <> '\' then Path1 := Path1 + '\';
++  if Path1[length(Path1)] <> '/' then Path1 := Path1 + '/';
+   write('Enter path to bot #2: ');
+   readln(Path2);
+-  if Path2[length(Path2)] <> '\' then Path2 := Path2 + '\';
++  if Path2[length(Path2)] <> '/' then Path2 := Path2 + '/';
+   randomize;
+   Col1 := random(15) + 1;
+   Col2 := random(15) + 1;
+@@ -121,7 +121,7 @@
+     writeln(LoadFile,Col1);
+     close(LoadFile);
+     swapvectors;
+-    exec(CurDir+'writer.exe','');
++    exec(CurDir+'writer','');
+     swapvectors;
+ 
+     erase(LoadFile);
+@@ -148,7 +148,7 @@
+     writeln(LoadFile,Col2);
+     close(LoadFile);
+     swapvectors;
+-    exec(CurDir+'writer.exe','');
++    exec(CurDir+'writer','');
+     swapvectors;
+ 
+     erase(LoadFile);
+@@ -169,4 +169,4 @@
+ (***********************************************************)
+ begin
+   run
+-end.
+\ No newline at end of file
++end.

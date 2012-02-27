@@ -1,0 +1,29 @@
+--- fbpdf.c.orig	2011-01-23 13:47:11.321550414 -0600
++++ fbpdf.c	2011-01-23 13:49:24.890479133 -0600
+@@ -250,6 +250,7 @@
+ 	printinfo();
+ 	fb_init();
+ 	mainloop();
++       fb_clear_screen();
+ 	fb_free();
+ 	write(STDIN_FILENO, show, strlen(show));
+ 	printf("\n");
+--- draw.c.orig	2011-01-23 13:47:05.131291123 -0600
++++ draw.c	2011-01-23 13:47:36.202592628 -0600
+@@ -136,3 +136,9 @@
+ {
+ 	return vinfo.xres;
+ }
++
++void fb_clear_screen(void)
++{
++	memset(fb, 0, finfo.line_length * vinfo.yres);
++	printf("\033[H\033[J");
++}
+--- draw.h.orig	2011-01-23 13:47:15.791737657 -0600
++++ draw.h	2011-01-23 13:48:31.821589201 -0600
+@@ -13,3 +13,4 @@
+ int fb_rows(void);
+ int fb_cols(void);
+ void fb_cmap(void);
++void fb_clear_screen(void);

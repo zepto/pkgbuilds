@@ -1,0 +1,64 @@
+# See http://wiki.archlinux.org/index.php/VCS_PKGBUILD_Guidelines
+# for more information on packaging from GIT sources.
+
+# Contributor: Your Name <youremail@domain.com>
+pkgname=qemu-spice-git
+pkgver=20110402
+pkgrel=1
+pkgdesc="Qemu with spice support"
+arch=(i686 x86_64)
+url="http://spice-space.org/page/Repositories"
+license=('GPL2' 'LGPL2.1')
+depends=('vde2' 'bluez' 'sdl' 'curl' 'brltty' 'spice')
+makedepends=('git' 'spice')
+provides=('qemu-spice')
+conflicts=('qemu-spice')
+replaces=('qemu-spice')
+#install=
+#source=($pkgname-$pkgver.tar.gz)
+md5sums=() #generate with 'makepkg -g'
+
+_gitroot="git://git.freedesktop.org/git/spice/qemu"
+_gitname="qemu"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+    cd "$_gitname"
+  fi
+  git checkout -b spice.v31 origin/spice.v31
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+
+  #./autogen.sh
+  sed -i 's_/share/qemu_/share/qemu-spice_g' configure
+  sed -i 's_/share/qemu_/share/qemu-spice_g' os-posix.c
+  sed -i 's_/qemu"_/qemu-spice"_g' Makefile
+ # ./configure --prefix=/usr --target-list=x86_64-softmmu --sysconfdir=/etc --enable-spice --enable-io-thread --disable-werror
+  ./configure --prefix=/usr --target-list=x86_64-softmmu,i386-softmmu --sysconfdir=/etc --audio-card-list=ac97,sb16,es1370,adlib,hda --audio-drv-list=alsa,sdl,oss,esd --enable-spice --enable-io-thread --disable-werror
+  make -j1 || return 1
+  make DESTDIR="$pkgdir/" install
+  rm -rf "$pkgdir"/usr/bin/qemu-{img,io,nbd}
+  rm -rf "$pkgdir"/usr/share/man
+  rm -rf "$pkgdir"/usr/share/doc
+  for i in $pkgdir/usr/bin/qemu*
+  do
+      mv $i $(echo $i | sed 's_qemu\([^/]*\)$_qemu-spice\1_g')
+  done
+  #mv "$pkgdir/usr/bin/qemu-system-x86_64" "$pkgdir/usr/bin/qemu-spice"
+} 

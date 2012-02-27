@@ -1,0 +1,29 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=aimage
+pkgver=3.2.3
+pkgrel=1
+pkgdesc="Advanced Disk Imager"
+arch=(i686)
+url="http://www.afflib.org"
+license=('BSD')
+depends=(afflib)
+makedepends=(afflib)
+provides=(aimage)
+options=()
+source=("http://www.afflib.org/downloads/${pkgname}-${pkgver}.tar.gz" ${pkgname}-gcc4.4.patch)
+md5sums=('ce0e20d509c39169a3587319e93f1f0c'
+         'bc5b156e4d7faca767f2775a9b5daf1b')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  #patch -p0 -i $startdir/${pkgname}-gcc4.4.patch || return 1
+
+  ./configure --prefix=/usr --enable-opt
+  make || return 1
+  make DESTDIR="$pkgdir/" install
+
+  install -D -m 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:

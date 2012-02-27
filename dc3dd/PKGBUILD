@@ -1,0 +1,24 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=dc3dd
+pkgver=6.12.3
+pkgrel=1
+pkgdesc="convert and copy a file"
+arch=(i686)
+url="http://dc3dd.sourceforge.net/"
+license=('GPL3')
+depends=(glibc)
+options=()
+source=($pkgname-$pkgver.tar.bz2)
+md5sums=('9bb2ca0d3ea82c147aa2f8089914cdd0')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure --prefix=/usr --bindir=/usr/bin --mandir=/usr/share/man
+  make || return 1
+  make DESTDIR="$pkgdir/" install
+
+  install -D -m 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:

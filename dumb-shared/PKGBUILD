@@ -1,0 +1,32 @@
+#Maintainer: JJDaNiMoTh <jjdanimoth@gmail.com>
+# Contributor: Bjørn Lindeijer <bjorn lindeijer nl>
+pkgname=dumb-shared
+pkgver=0.9.3
+pkgrel=2
+pkgdesc="An IT, XM, S3M and MOD player library"
+arch=('i686' 'x86_64')
+license=('custom:dumb' 'GPL')
+url="http://dumb.sourceforge.net/"
+depends=('glibc' 'allegro' 'dumb')
+#source=(http://downloads.sourceforge.net/sourceforge/dumb/dumb-$pkgver.tar.gz 
+        #http://downloads.sourceforge.net/sourceforge/dumb/dumb-$pkgver-autotools.tar.gz)
+
+build() {
+    ar x /usr/lib/libdumb.a
+    gcc --shared -o libdumb-$pkgver.so *.o
+    install -D -m755 libdumb-$pkgver.so $pkgdir/usr/lib/libdumb-$pkgver.so
+    ln -s /usr/lib/libdumb-$pkgver.so $pkgdir/usr/lib/libdumb.so
+  #cd $srcdir/dumb-$pkgver
+
+  #./configure --prefix=/usr
+  #make
+  #make install DESTDIR="$pkgdir/"
+
+  #rm -rf "$pkgdir"/usr/{bin,include}
+  #rm -rf "$pkgdir"/usr/lib/{*.la,*.a}
+
+  #install -D -m644 licence.txt \
+    #$pkgdir/usr/share/licenses/$pkgname/licence.txt
+}
+md5sums=('f48da5b990aa8aa822d3b6a951baf5c2'
+         '3e345d643060880bab7c574774c4b35b')

@@ -1,0 +1,28 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=xwpe
+pkgver=1.5.30a
+pkgrel=1
+pkgdesc="A programming environment for UNIX systems."
+arch=(i686 x86_64)
+url="http://www.identicalsoftware.com/xwpe/index.html"
+license=('GPL')
+depends=(ncurses gpm libx11 libsm)
+makedepends=(ncurses libx11 libsm)
+source=(http://www.identicalsoftware.com/xwpe/$pkgname-$pkgver.tar.gz)
+md5sums=('11ad41d636f9ff07820ee0869a177a5c')
+sha256sums=('fce37a5dd3afd7102a73d187eda8b9d1ab88bf5db649f385b8cd13e72e0c7961')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure --prefix=/usr --mandir='${prefix}'/share/man
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  make prefix="$pkgdir/usr" install 
+}
+
+# vim:set ts=2 sw=2 et:

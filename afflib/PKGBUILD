@@ -1,0 +1,40 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=afflib
+pkgver=3.5.2
+pkgrel=1
+pkgdesc="Library to support the Advanced Forensic Format"
+arch=(i686)
+url="http://www.afflib.org"
+license=('BSD')
+depends=(libewf python expat fuse)
+makedepends=(libewf python fuse)
+optdepends=()
+provides=(afflib)
+options=(!libtool)
+install=afflib.install
+source=($pkgname-$pkgver.tar.gz afflib-3.0.1-WCtype.patch)
+md5sums=('0ce8f3dbacc31da1c3faf5bc3e77c535'
+         'f5e71ee4d53f8903bb4b0d906b4f1215')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  #patch -p1 < ../afflib-3.0.1-WCtype.patch
+  ./configure --prefix=/usr  --sysconfdir=/etc --libdir=/usr/lib  --includedir=/usr/include --bindir=/usr/bin --mandir=/usr/share/man --datadir=/usr/share --enable-shared --enable-wide-character-type --disable-static --enable-libewf=yes --enable-qemu=yes --enable-python=yes
+
+  # Remove rpath from libtool
+  sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+  sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+
+  # clean unused-direct-shlib-dependencies
+  sed -i -e 's| -shared | -Wl,--as-needed\0|g' libtool
+
+  make || return 1
+  make DESTDIR="$pkgdir/" install
+
+  #find "$pkgdir" -name '*.la' -exec rm -f {} ';'
+
+  install -D -m 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:

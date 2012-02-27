@@ -1,0 +1,31 @@
+# Maintainer: fnord0 <fnord0 AT riseup DOT net>
+
+pkgname=sbd
+pkgver=1.37
+pkgrel=1
+pkgdesc="A Netcat-clone, designed to be portable and offer strong encryption. It runs on Unix-like operating systems and on Microsoft Win32. sbd features AES-128-CBC + HMAC-SHA1 encryption (by Christophe Devine), program execution (-e option), choosing source port, continuous reconnection with delay, and some other nice features"
+url="http://www2.packetstormsecurity.org/cgi-bin/search/search.cgi?searchvalue=sbd"
+arch=('i686' 'x86_64')
+license=('GPL')
+#source=("http://packetstormsecurity.org/UNIX/netcat/${pkgname}-${pkgver}.tar.gz")
+source=("http://mirrors.kernel.org/gentoo/distfiles/${pkgname}-${pkgver}.tar.gz")
+md5sums=('fe633081eed1e5e7ac5936b32146f2ac')
+sha1sums=('4905e2ac3ab261987593ec94354a877a24fa4059')
+
+build() {
+    cd ${srcdir}/${pkgname}-${pkgver}
+    make unix
+}
+
+package() {
+    cd ${srcdir}/${pkgname}-${pkgver}
+    install -d ${pkgdir}/usr/bin
+    install -d ${pkgdir}/usr/share/${pkgname}/doc
+    install -d ${pkgdir}/usr/share/licenses/${pkgname}
+    install -Dm755 ${srcdir}/${pkgname}-${pkgver}/${pkgname} ${pkgdir}/usr/bin/${pkgname}
+    install -Dm755 ${srcdir}/${pkgname}-${pkgver}/binaries/${pkgname}.exe ${pkgdir}/usr/share/${pkgname}/${pkgname}.exe || return 1
+    install -Dm755 ${srcdir}/${pkgname}-${pkgver}/binaries/${pkgname}bg.exe ${pkgdir}/usr/share/${pkgname}/${pkgname}bg.exe || return 1
+    install -Dm644 README ${pkgdir}/usr/share/${pkgname}/doc/README || return 1
+    install -Dm644 CHANGES ${pkgdir}/usr/share/${pkgname}/doc/CHANGES || return 1
+    install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING || return 1
+}

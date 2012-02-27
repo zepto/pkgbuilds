@@ -1,0 +1,46 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=ttf-ricty-git
+pkgver=20120221
+pkgrel=1
+pkgdesc='Japanese TrueType font for developers by mixing Inconsolata and Migu 1M.'
+arch=('any')
+url='http://save.sys.t.u-tokyo.ac.jp/~yusa/fonts/ricty.html'
+license=('public domain')
+depends=('fontconfig' 'xorg-font-utils')
+makedepends=('fontforge' 'ttf-inconsolata' 'ttf-migu')
+install=ttf.install
+
+_gitroot=git://github.com/yascentur/Ricty
+_gitname=Ricty
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+  ./ricty_generator.sh /usr/share/fonts/TTF/{ttf-inconsolata.otf,migu-1m-regular.ttf,migu-1m-bold.ttf}
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  install -d "$pkgdir/usr/share/fonts/TTF"
+  install -m644 *.ttf "$pkgdir/usr/share/fonts/TTF/"
+}
+
+# vim:set ts=2 sw=2 et:

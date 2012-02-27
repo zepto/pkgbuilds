@@ -1,0 +1,54 @@
+# Contributor: Nezmer <me@nezmer.info>
+pkgname=radeon_ucode
+pkgver=2
+pkgrel=2
+pkgdesc="Radeon ucode firmware files"
+arch=(any)
+depends=(kernel26-firmware)
+url="http://people.freedesktop.org/~agd5f/radeon_ucode"
+license=('custom')
+source=("${url}/CEDAR_rlc.bin"
+        "${url}/CYPRESS_me.bin"
+        "${url}/CYPRESS_pfp.bin"
+        "${url}/CYPRESS_rlc.bin"
+        "${url}/JUNIPER_me.bin"
+        "${url}/JUNIPER_pfp.bin"
+        "${url}/JUNIPER_rlc.bin"
+        "${url}/LICENSE.radeon"
+        "${url}/R600_rlc.bin"
+        "${url}/R700_rlc.bin"
+        "${url}/REDWOOD_me.bin"
+        "${url}/REDWOOD_pfp.bin"
+        "${url}/REDWOOD_rlc.bin")
+md5sums=('f7c005e3be9f47b8911e2044b4219db4'
+         'fa937b6596298b4bbc9edb6df4adca2a'
+         '2dca2882a14e1d6a43792f786471ec51'
+         'f7c005e3be9f47b8911e2044b4219db4'
+         'fa937b6596298b4bbc9edb6df4adca2a'
+         '2dca2882a14e1d6a43792f786471ec51'
+         'f7c005e3be9f47b8911e2044b4219db4'
+         '4c243f7854d2884b483abda991adef43'
+         'f74a5163948bde215be6b689ca24afde'
+         '411b41ca3117ca88dbd9689a57f09a89'
+         '9334c37ae709f8faa6120c3ad7a5adb7'
+         '23915e382ea0d2f2491a19146ca3001c'
+         'f7c005e3be9f47b8911e2044b4219db4')
+
+build() {
+  cd "$srcdir/"
+
+  if [[ -d /lib/firmware/radeon ]];then
+    echo "/lib/firmware/radeon exists"
+  else
+    echo "/lib/firmware/radeon directory does not exist. Please install
+    kernel26-firmware or any package that provides kernel firmware
+    files." && return 1
+  fi
+
+  for f in *.bin; do
+    install -D -m644  "${f}" "$pkgdir/lib/firmware/radeon/${f}"
+  done
+
+  install -D -m644 LICENSE.radeon ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+  }
+# vim:set ts=2 sw=2 et:

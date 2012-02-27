@@ -1,0 +1,31 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=dmtcp
+pkgver=1.2.3
+pkgrel=1
+pkgdesc="A tool to checkpoint the state of arbitrary programs."
+arch=(i686 x86_64)
+url="http://dmtcp.sourceforge.net"
+license=('LGPL3')
+depends=(gcc-libs)
+install=
+changelog=
+source=("http://downloads.sourceforge.net/$pkgname/${pkgname}-${pkgver}.tar.gz")
+md5sums=('e984284ade1e8e277d230f20948ed69c')
+sha256sums=('4f2e6bbaf6d732b5178d323ae2e63638fe10ed9b0fdcd9ddcef4c755d77dd0b3')
+
+build() {
+  cd "$srcdir/${pkgname}-${pkgver}"
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/${pkgname}-${pkgver}"
+
+  make prefix="$pkgdir/usr" install
+  install -dm755 "$pkgdir/usr/share/man/man1"
+  install -Dm644 manpages/dmtcp.1 "$pkgdir/usr/share/man/man1/dmtcp.1"
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,18 @@
+--- src/ident.cpp.orig	2009-10-11 20:11:21.417476427 -0500
++++ src/ident.cpp	2009-10-11 20:13:23.087464927 -0500
+@@ -126,9 +126,13 @@
+  */
+ void getresult(const char *buf,const char *str,char **res)
+ {
+-    char *pos = strstr(buf,str);
++    char *buf_tmp;
++    char *str_tmp;
++    strcpy(buf_tmp, buf);
++    strcpy(str_tmp, str);
++    char *pos = strstr(buf_tmp, str_tmp);
+     if(!pos) return;
+-    pos += strlen(str);
++    pos += strlen(str_tmp);
+     *res = strdup(pos);
+     char *cc = index(*res,'\n');
+     if(cc) *cc = '\000';

@@ -1,0 +1,54 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=openfng-git
+pkgver=20110810
+pkgrel=1
+pkgdesc="An opensource fng server for teeworlds"
+arch=(i686 x86_64)
+url="https://github.com/fisted/teeworlds"
+license=('custom')
+depends=()
+makedepends=('git' 'bam')
+
+_gitroot="https://github.com/fisted/teeworlds"
+_gitname="teeworlds"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+
+  sed -i 's_teeworlds/data_openfng/data_g' src/engine/shared/storage.cpp
+
+  bam server_release
+}
+
+package() {
+    cd "$srcdir/$_gitname-build"
+
+	# Install data files
+	mkdir -p ${pkgdir}/usr/share/openfng/data
+	cp -r data/* ${pkgdir}/usr/share/openfng/data
+    cp openfng.cfg ${pkgdir}/usr/share/openfng
+
+	install -Dm755 teeworlds_srv ${pkgdir}/usr/bin/openfng_srv
+
+	install -Dm644 license.txt \
+		${pkgdir}/usr/share/licenses/openfng/license.txt
+} 

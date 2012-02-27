@@ -1,0 +1,23 @@
+# Contributor: Josiah Gordon <josiahg@gamil.com>
+
+pkgname=cothello
+pkgver=0.03
+pkgrel=1
+pkgdesc="This program playes the classic board game Othello agains you."
+arch=(i686)
+url="http://david.weekly.org/othello/"
+license=('GPL3')
+source=(${url}/othello-$pkgver.tar.gz)
+md5sums=('046931bfe95f89b0f3c82f398dfedb2e')
+
+build() {
+  cd "$srcdir/othello-$pkgver"
+
+  ./configure --prefix=/usr --mandir=/usr/share/man
+  make || return 1
+  make DESTDIR="$pkgdir/" install
+  mv "$pkgdir/usr/bin/othello" "$pkgdir/usr/bin/cothello"
+  mv "$pkgdir/usr/share/man/man6/othello.6" "$pkgdir/usr/share/man/man6/cothello.6"
+}
+
+# vim:set ts=2 sw=2 et:

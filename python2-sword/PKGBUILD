@@ -1,0 +1,35 @@
+# Contributor: Dale Ogilvie <pnyli0002@sneakemail.com>
+
+pkgname=python2-sword
+pkgver=1.6.2
+pkgrel=1
+pkgdesc="Python bindings for SWORD"
+arch=(i686 x86_64)
+url="http://www.crosswire.org/sword/index.jsp"
+license="GPL"
+options=()
+depends=('python2' 'sword' 'swig')
+makedepends=('python2')
+replaces=('sword-python2')
+conflicts=('sword-python2')
+source=(http://www.crosswire.org/ftpmirror/pub/sword/source/v1.6/sword-${pkgver}.tar.gz)
+md5sums=('a7dc4456e20e915fec46d774b690e305')
+
+build() {
+  cd $startdir/src/sword-${pkgver}
+  # assume sword built with lucene and icu
+  #./configure --prefix=/usr --sysconfdir=/etc --with-lucene --with-icu
+  cd bindings/swig/package
+  sed -i 's/1\.5\.[[:alnum:]]*/1\.6\.0/g' configure.ac
+  libtoolize --force
+  ./autogen.sh
+  ./configure --prefix=/usr --sysconfdir=/etc --with-python=/usr/bin/python2
+  make pythonswig
+  make python_make
+}
+
+package() {
+  cd $startdir/src/sword-${pkgver}
+  cd bindings/swig/package/python
+  python2 setup.py install --root=$startdir/pkg
+}

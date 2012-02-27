@@ -1,0 +1,26 @@
+# $Id: $
+# Maintainer: Allan McRae <allan@archlinux.org>
+# Contributor: Gilles Fabio <gilles.fabio@gmail.com>
+
+pkgname=python-pyalsaaudio
+pkgver=0.6
+pkgrel=3
+pkgdesc="ALSA wrapper for Python"
+arch=('i686' 'x86_64')
+url="http://pyalsaaudio.sourceforge.net/"
+license=('PSF')
+depends=('python' 'alsa-lib')
+source=(http://downloads.sourceforge.net/pyalsaaudio/pyalsaaudio-$pkgver.tar.gz)
+md5sums=('94811fc4de883996eac4046d36fe2364')
+
+build() {
+  cd $srcdir/pyalsaaudio-$pkgver
+
+  python setup.py build
+}
+
+package() {
+  cd $srcdir/pyalsaaudio-$pkgver
+
+  python setup.py install --root=$pkgdir
+}

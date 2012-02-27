@@ -1,0 +1,26 @@
+# $Id: PKGBUILD,v 1.00 2009/05/31 01:00 darkbaboon Exp $
+# Contributor: Ronan Rabouin <darkbaboon@gmail.com>
+
+pkgname=adeskbar
+pkgver=0.22
+pkgrel=1
+pkgdesc="A Quick Application Launcher"
+arch=('i686' 'x86_64')
+url="http://www.ad-comp.be/index.php?category/ADesk-Bar"
+license=('GPL3')
+depends=('python' 'pygtk')
+optdepends=('python-wnck: for Desktop-plugin and Intellihide-function'
+            'python-pyalsaaudio: for Volume-plugin')
+provides=($pkgname)
+conflicts=($pkgname-bzr)
+source=(http://www.ad-comp.be/public/projets/ADeskBar/adeskbar_$pkgver-$pkgrel.tar.bz2)
+md5sums=('5fdce6fb16e73e4de8d1180f3eec83b5')
+
+build() {
+   cd $srcdir
+   install -d $pkgdir/usr/{bin,share/$pkgname,share/pixmaps,share/applications}
+   cp -a $srcdir/$pkgname/src/* $pkgdir/usr/share/$pkgname
+   install -m 644 $srcdir/$pkgname/src/images/$pkgname.png $pkgdir/usr/share/pixmaps/
+   install -m 644 $srcdir/$pkgname/$pkgname.desktop $pkgdir/usr/share/applications/
+   install -m 755 $srcdir/$pkgname/$pkgname.sh $pkgdir/usr/bin/$pkgname
+}

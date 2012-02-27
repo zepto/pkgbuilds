@@ -1,0 +1,27 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=gzrt
+pkgver=0.5
+pkgrel=1
+pkgdesc="Recover data from a corrupted gzip file"
+arch=(i686)
+url="http://www.urbanophile.com/arenn/hacking/gzrt/gzrt.html"
+license=('GPL2')
+depends=(cpio zlib)
+makedepends=(zlib)
+options=()
+install=
+source=(http://www.urbanophile.com/arenn/hacking/gzrt/$pkgname-$pkgver.tar.gz)
+md5sums=('91e9cbc1d92276742691dca89d6b8293')
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+
+    make || return 1
+
+    gzip gzrecover.1
+
+    install -D -m 755 gzrecover "$pkgdir/usr/bin/gzrecover"
+    install -D -m 644 gzrecover.1.gz "$pkgdir/usr/share/man/man1/gzrecover.1.gz"
+}
+
+# vim:set ts=2 sw=2 et:

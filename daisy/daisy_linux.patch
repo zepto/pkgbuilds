@@ -1,0 +1,412 @@
+--- test/daisy.pas	2005-11-13 18:17:40.000000000 -0600
++++ daisy.pas	2010-12-23 21:28:26.979786581 -0600
+@@ -413,14 +413,14 @@
+ procedure OpenTrans(var TransFile : text);
+ 
+ begin
+-  if not FileExist('DAISY.TXT') then
++  if not FileExist('daisy.txt') then
+     begin
+-      assign(TransFile,'DAISY.TXT');
++      assign(TransFile,'daisy.txt');
+       rewrite(TransFile);
+       close(TRansFile);
+     end;
+ 
+-  assign(TransFile,'DAISY.TXT');
++  assign(TransFile,'daisy.txt');
+   append(TransFile);
+   writeln(TransFile);
+   writeln(TransFile,'***Transcript of ',Date,'... starting at ',Time);
+@@ -459,7 +459,7 @@
+   EmptyFile := FALSE;
+   if eof(LoadFile) then EmptyFile := TRUE;
+ 
+-  while (not eof(LoadFile)) AND (MemAvail > 255) do
++  while (not eof(LoadFile)) do
+     begin
+       if Memory = NIL then
+         begin
+@@ -966,7 +966,7 @@
+ begin
+   Choice := 1;
+   repeat
+-  CursorOff;
++  {CursorOff;}
+   PopUpWin(17,6,63,15,15,3,'OPTIONS',TRUE);
+   repeat
+     textcolor(1); textbackground(3);
+@@ -995,7 +995,7 @@
+     if Choice = 0 then Choice := 1;
+     if Choice = 7 then Choice := 6;
+   until Nothing = #13;
+-  CursorOn;
++  {CursorOn;}
+   ExitWin;
+   case Choice of
+   1: CorrectSpell;
+@@ -1031,7 +1031,7 @@
+   PopUpWin(25,12,73,16,1,2,'NEW FILE',TRUE);
+   write('File name for new file: ');
+   readln(FileName);
+-  if pos('.',FileName) = 0 then FileName := FileName + '.DSY';
++  if pos('.',FileName) = 0 then FileName := FileName + '.dsy';
+   if FileExist(FileName) then
+     begin
+       LastError := 217;
+@@ -1050,7 +1050,7 @@
+           CloseTrans(TransFile);
+           SaveMemory;
+           EraseList(Memory);
+-          MemFile := ToUpper(FileName);
++          MemFile := FileName;
+           LoadMemory;
+           CreateBuffer;
+           OpenTrans(TransFile);
+@@ -1070,7 +1070,7 @@
+ begin
+   PopUpWin(3,3,24,20,15,1,'DIRECTORY LIST',TRUE);
+   textcolor(14);
+-  FindFirst('*.DSY', Archive, DirInfo); { Same as DIR *.PAS }
++  FindFirst('*.dsy', Archive, DirInfo); { Same as DIR *.PAS }
+   count := 1;
+   while DosError = 0 do
+     begin
+@@ -1083,11 +1083,11 @@
+   PopUpWin(38,13,72,16,1,2,'LOAD FILE',TRUE);
+   write('File name to load: ');
+   readln(FileName);
+-  if pos('.',FileName) = 0 then FileName := FileName + '.DSY';
++  if pos('.',FileName) = 0 then FileName := FileName + '.dsy';
+   if FileExist(FileName) then
+     begin
+       CloseTrans(TransFile);
+-      MemFile := ToUpper(FileName);
++      MemFile := FileName;
+       LoadMemory;
+ {      CreateBuffer;}
+       OpenTrans(TransFile);
+@@ -1113,7 +1113,7 @@
+ begin
+   PopUpWin(3,3,24,20,15,1,'DIRECTORY LIST',TRUE);
+   textcolor(14);
+-  FindFirst('*.DSY', Archive, DirInfo); { Same as DIR *.PAS }
++  FindFirst('*.dsy', Archive, DirInfo); { Same as DIR *.PAS }
+   count := 1;
+   while DosError = 0 do
+     begin
+@@ -1126,10 +1126,10 @@
+   PopUpWin(37,13,73,16,1,2,'DEFAULT FILE',TRUE);
+   write('Default memory file: ');
+   readln(FileName);
+-  if pos('.',FileName) = 0 then FileName := FileName + '.DSY';
++  if pos('.',FileName) = 0 then FileName := FileName + '.dsy';
+   if FileExist(FileName) then
+     begin
+-      DefFile := ToUpper(FileName);
++      DefFile := FileName;
+       ExitWin;
+     end
+   else
+@@ -1153,7 +1153,7 @@
+ begin
+   PopUpWin(3,3,24,20,15,1,'DIRECTORY LIST',TRUE);
+   textcolor(14);
+-  FindFirst('*.DSY', Archive, DirInfo); { Same as DIR *.PAS }
++  FindFirst('*.dsy', Archive, DirInfo); { Same as DIR *.PAS }
+   count := 1;
+   while DosError = 0 do
+     begin
+@@ -1166,7 +1166,7 @@
+   PopUpWin(40,13,71,16,1,2,'DELETE FILE',TRUE);
+   write('File to delete: ');
+   readln(FileName);
+-  if pos('.',FileName) = 0 then FileName := FileName + '.DSY';
++  if pos('.',FileName) = 0 then FileName := FileName + '.dsy';
+   if NOT FileExist(FileName) then
+     begin
+       ExitWin;
+@@ -1212,7 +1212,7 @@
+     write(ToUpper(UserName) + '>');
+     PopUpWin(17,4,63,17,15,3,'FILES',TRUE);
+ 
+-  CursorOff;
++  {CursorOff;}
+   repeat
+     textcolor(0); textbackground(3);
+     center('Default file: '+DefFile,46,1);
+@@ -1247,7 +1247,7 @@
+     if Choice = 0 then Choice := 1;
+     if Choice = 7 then Choice := 6;
+   until Nothing = #13;
+-  CursorOn;
++  {CursorOn;}
+   ExitWin;
+   case Choice of
+   1: NewFile(TransFile);
+@@ -1277,7 +1277,7 @@
+ 
+ begin
+   SaveMemory;
+-  FindFirst('*.DFD', Archive, DirInfo); { Same as DIR *.PAS }
++  FindFirst('*.dfd', Archive, DirInfo); { Same as DIR *.PAS }
+   X1 := 0;
+   First := NIL;
+   while DosError = 0 do
+@@ -1324,7 +1324,7 @@
+ 
+   PopUpWin(17,10-(x1 DIV 2),63,13 + (x1 DIV 2),15,3,'PLUG IN',TRUE);
+   Y1 := 1;
+-  CursorOff;
++  {CursorOff;}
+   repeat
+     textcolor(1); textbackground(3); clrscr;
+     Ptr := First;
+@@ -1355,7 +1355,7 @@
+     if Y1 = 0 then Y1 := 1;
+     if Y1 = (X1+1) then Y1 := X1;
+   until Nothing = #13;
+-  CursorOn;
++  {CursorOn;}
+ 
+   Ptr := First;
+   Y2 := 1;
+@@ -1934,7 +1934,21 @@
+         Loc := Loc +1;
+       end;
+   until TempChar = #13;
+-  if copy(TempText1,1,3) <> '%%%' then writeln;
++  if copy(TempText1,1,3) <> '%%%' then 
++  begin
++      writeln;
++      if (length(TempText1) <> 0) AND (length(TempText2) = 0) then 
++      begin
++          if (TempText1 = ' ') then
++              begin
++                  TempText1 := '';
++              end
++          else
++              begin
++                  TempText2 := ' ';
++              end;
++      end;
++  end;
+   GetText := TempText1 + TempText2;
+ end;
+ 
+@@ -1977,18 +1991,18 @@
+ var X : char;
+ 
+ begin
+-  CursorOff;
++  {CursorOff;}
+   PopUpWin(15,5,65,12,15,3,'ABOUT',TRUE);
+   textcolor(1);
+   writeln('                  DAISY v1.1');
+   writeln('           A Greg Leedberg Creation');
+   writeln;
+   textcolor(0);
+-  writeln('Memory available = ',memavail,' bytes.');
++  {writeln('Memory available = ',memavail,' bytes.');}
+   writeln('Vocabulary size: ',VocabCount(TRUE),' words.');
+   write('Average speed = ',Speed :1:2,' sentences per second.');
+   X := GetKey;
+-  CursorOn;
++  {CursorOn;}
+   RestoreScreen;
+ end;
+ 
+@@ -2056,13 +2070,13 @@
+   writeln;
+   write('Enter path to link to: ');
+   readln(LinkDir);
+-  if LinkDir[length(LinkDir)] <> '\' then LinkDir := LinkDir + '\';
++  if LinkDir[length(LinkDir)] <> '/' then LinkDir := LinkDir + '/';
+   LoadMemory;
+   PopUpWin(20,5,60,8,14,4,'INIT',TRUE);
+-  CursorOff;
++  {CursorOff;}
+   CreateTermFile;
+   CreateBuffer;
+-  CursorOn;
++  {CursorOn;}
+   if VocabCount(FALSE) > 0 then
+     begin
+       ExitWin;
+@@ -2120,7 +2134,7 @@
+   rewrite(LinkFile);
+   writeln(LinkFile,'2');
+   writeln(LinkFile,'0');
+-  writeln(LinkFile,'DAISY2.EXE');
++  writeln(LinkFile,'daisy2');
+   writeln(LinkFile,DaisyName);
+   writeln(LinkFile,'0');
+   close(LinkFile);
+@@ -2271,9 +2285,9 @@
+       center('important information on using Daisy, which will',54,6);
+       center('help you get the most out of your Daisy experience.',54,7);
+       center('Have fun!',54,9);
+-      CursorOff;
++      {CursorOff;}
+       InString[1] := GetKey;
+-      CursorOn;
++      {CursorOn;}
+       RestoreScreen;
+       clrscr;
+     end;
+@@ -2286,10 +2300,10 @@
+   textcolor(15);
+   OpenTrans(TransFile);
+   PopUpWin(20,5,60,8,14,4,'INIT',TRUE);
+-  CursorOff;
++  {CursorOff;}
+   CreateTermFile;
+   CreateBuffer;
+-  CursorOn;
++  {CursorOn;}
+   if VocabCount(FALSE) > 0 then
+     begin
+       ExitWin;
+@@ -2411,7 +2425,7 @@
+       rewrite(LoadFile);
+       writeln(LoadFile,'2');
+       writeln(LoadFile,'0');
+-      writeln(LoadFile,'DAISY.EXE');
++      writeln(LoadFile,'daisy');
+       writeln(LoadFile,DaisyName);
+       writeln(LoadFile,'0');
+       close(LoadFile);
+@@ -2434,4 +2448,4 @@
+ begin
+   randomize;
+   run;
+-end.
+\ No newline at end of file
++end.
+--- test/init.pas	2005-11-13 18:18:20.000000000 -0600
++++ init.pas	2010-12-23 22:06:38.925391431 -0600
+@@ -34,7 +34,7 @@
+   assign(DaisyFile,FileName);
+   rewrite(DaisyFile);
+ 
+-  if FileName = 'MEM.DSY' then
++  if FileName = 'mem.dsy' then
+     begin
+       writeln(DaisyFile,'Daisy');
+       writeln(DaisyFile,'1');
+@@ -750,24 +750,24 @@
+       writeln(DaisyFile,'stones.');
+       writeln(DaisyFile,'***');
+     end
+-  else if FileName = 'SETUP.DAT' then
++  else if FileName = 'setup.dat' then
+     begin
+       writeln(DaisyFile,'14');
+       writeln(DaisyFile,'11');
+-      writeln(DaisyFile,'MEM.DSY');
++      writeln(DaisyFile,'mem.dsy');
+       writeln(DaisyFile,'50');
+       writeln(DaisyFile,'3');
+       writeln(DaisyFile,'1');
+     end
+-  else if FileName = 'UDLP.NFO' then
++  else if FileName = 'udlp.nfo' then
+     begin
+       writeln(DaisyFile,'2');
+       writeln(DaisyFile,'0');
+-      writeln(DaisyFile,'DAISY.EXE');
++      writeln(DaisyFile,'daisy');
+       writeln(DaisyFile,'Daisy');
+       writeln(DaisyFile,'0');
+     end
+-  else if FileName = 'DAISY.TXT' then
++  else if FileName = 'daisy.txt' then
+     begin
+     end;
+ 
+@@ -784,14 +784,14 @@
+   readln(YN);
+   if upcase(YN) = 'Y' then
+     begin
+-      write('Initializing MEM.DSY...');
+-      InitFile('MEM.DSY');
++      write('Initializing mem.dsy...');
++      InitFile('mem.dsy');
+       writeln('done!');
+-      write('Initializing SETUP.DAT...');
+-      initfile('SETUP.DAT');
++      write('Initializing setup.dat...');
++      initfile('setup.dat');
+       writeln('done!');
+-      write('Initializing UDLP.NFO...');
+-      initfile('UDLP.NFO');
++      write('Initializing udlp.nfo...');
++      initfile('udlp.nfo');
+       writeln('done!');
+ 
+       write('Do you wish to clear the contents of DAISY.TXT as well? ');
+@@ -799,7 +799,7 @@
+       if upcase(YN) = 'Y' then
+         begin
+           write('Initializing DAISY.TXT...');
+-          InitFile('DAISY.TXT');
++          InitFile('daisy.txt');
+           writeln('done!');
+         end;
+     end;
+@@ -807,4 +807,4 @@
+ 
+ begin
+   run
+-end.
+\ No newline at end of file
++end.
+--- test/link.pas	2005-11-13 18:20:00.000000000 -0600
++++ link.pas	2010-12-23 22:05:24.671143880 -0600
+@@ -52,7 +52,7 @@
+ begin
+   {$M $4000,0,0 }
+   GetDir(0,CurDir);
+-  curdir := curdir + '\';
++  curdir := curdir + '/';
+   textbackground(1);
+   clrscr;
+   gotoxy(1,1);
+@@ -63,10 +63,10 @@
+   textcolor(7);
+   write('Enter path to bot #1: ');
+   readln(Path1);
+-  if Path1[length(Path1)] <> '\' then Path1 := Path1 + '\';
++  if Path1[length(Path1)] <> '/' then Path1 := Path1 + '/';
+   write('Enter path to bot #2: ');
+   readln(Path2);
+-  if Path2[length(Path2)] <> '\' then Path2 := Path2 + '\';
++  if Path2[length(Path2)] <> '/' then Path2 := Path2 + '/';
+   randomize;
+   Col1 := random(15) + 1;
+   Col2 := random(15) + 1;
+@@ -120,7 +120,7 @@
+     writeln(LoadFile,Col1);
+     close(LoadFile);
+     swapvectors;
+-    exec(CurDir+'writer.exe','');
++    exec(CurDir+'writer','');
+     swapvectors;
+ 
+     erase(LoadFile);
+@@ -147,7 +147,7 @@
+     writeln(LoadFile,Col2);
+     close(LoadFile);
+     swapvectors;
+-    exec(CurDir+'writer.exe','');
++    exec(CurDir+'writer','');
+     swapvectors;
+ 
+     erase(LoadFile);
+@@ -168,4 +168,4 @@
+ (***********************************************************)
+ begin
+   run
+-end.
+\ No newline at end of file
++end.

@@ -1,0 +1,20 @@
+#!/bin/bash
+# Launcher script for bpbible
+# Modified ulipad.launcher by Tim Yang <tdy@gmx.com>
+
+LOCAL_DIR=~/.bpbible
+BP_DIR=/usr/share/bpbible-0.4.7
+
+create_local() {
+  install -dm755 $LOCAL_DIR
+
+  for dir in $BP_DIR/*; do [[ -d $dir ]] && ln -sf $dir $LOCAL_DIR; done
+
+  find $LOCAL_DIR -type d -exec chmod 755 '{}' \;
+  find $LOCAL_DIR -type f -exec chmod 644 '{}' \;
+}
+
+[ ! -e "$LOCAL_DIR" ] && create_local
+cd $LOCAL_DIR
+python2 $BP_DIR/bpbible.py "$@" 2> $LOCAL_DIR/run_error.txt
+exit $?

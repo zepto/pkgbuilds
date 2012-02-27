@@ -1,0 +1,50 @@
+# Contributor: Jon Nordby <jononor@gmail.com>
+
+pkgname=qemu-spice
+pkgver=0.4.0
+pkgrel=2
+pkgdesc="QEMU version with support for the SPICE virtual desktop protocol"
+arch=('x86_64')
+url="http://www.spice-space.org"
+license=('GPL')
+depends=('kernel26>=2.6.30' 'libspice' 'qemu-kvm')
+makedepends=('dev86' 'iasl')
+provides=('qemu-spice')
+#install=qemu-spice.install
+source=($url/download/vdesktop_0_4.tar.bz2)
+noextract=()
+md5sums=('69d68fa351f890b3536f5ff2f9247c42')
+
+build() {
+  cd "$srcdir/vdesktop"
+
+  sed -i 's/datasuffix=\"\/share\/qemu\"/datasuffix=\"\/share\/qemu-spice\"/' qemu/configure
+  # Build qemu with kvm and spice support
+  ./configure --prefix=/usr --enable-spice || return 1
+  make libkvm || return 1
+  make qemu || return 1
+
+  # Build BIOS for qemu. Binaries exist on spice website
+  make bios || return 1
+  cp bios/BIOS-bocks-latest qemu/pc-bios/bios.bin
+
+  make vgabios || return 1
+  cp vgabios/VGABIOS-lgpl-latest.bin qemu/pc-bios/vgabios.bin
+  cp vgabios/VGABIOS-lgpl-latest.cirrus.bin qemu/pc-bios/vgabios-cirrus.bin
+
+  cd "$srcdir/$pkgname"
+
+  # Workaround to keep 'make install' from doing kernel stuff
+  make -C libkvm DESTDIR="$pkgdir/" install
+  make -C qemu DESTDIR="$pkgdir/" install
+  rm -rf "$pkgdir"/usr/bin/qemu-{img,io,nbd}
+  mv "$pkgdir/usr/bin/qemu-system-x86_64" "$pkgdir/usr/bin/qemu-spice"
+
+  for i in bios.bin vgabios.bin vgabios-cirrus.bin
+  do
+    install -m 0644 qemu/pc-bios/$i "$pkgdir/usr/share/$pkgname/$i"
+  done
+  
+}
+
+# vim:set ts=2 sw=2 et:

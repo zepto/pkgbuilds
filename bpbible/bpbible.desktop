@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=BPBible
+Comment=A flexible Bible Study tool.
+TryExec=/usr/bin/bpbible
+Exec=bpbible
+Icon=/usr/share/bpbible-0.4.5/graphics/bible.svg
+Terminal=false
+MimeType=text/plain;
+Categories=Utility;Education;
