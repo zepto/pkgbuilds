@@ -1,0 +1,74 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=gsharkdown-hg
+_pkgname=gsharkdown
+pkgver=322
+pkgrel=1
+pkgdesc="Application for downloading and playing music from grooveshark.com"
+arch=('any')
+url="https://bitbucket.org/vkolev/gsharkdown"
+license=('GPL3')
+depends=('gstreamer0.10-python' 'python-configobj' 'dbus-python' 'python-pycurl')
+optdepends=('python2-pylast: last.fm support'
+            'python-notify: notification support'
+            'xdg-user-dirs: autodetect xdg music dir'
+            'libappindicator: indicator integration')
+makedepends=('mercurial')
+provides=(gsharkdown)
+conflicts=(gsharkdown)
+install="$_pkgname.install"
+source=("$_pkgname.desktop" "$_pkgname.sh")
+md5sums=('81869090135791eba7e658619f4eafdd'
+         'ede76e8bd3dcb1156e01f377a6c49cac')
+sha256sums=('1ce360cef30da585c37535229eaf2fe4fc294c2b971ba70f7e3b335cc970ac8a'
+            'd406def788426dc03e2c5b422e53465f0c40755d4a5d935e7b4bf59abaea474b')
+
+_hgroot="https://bitbucket.org/vkolev"
+_hgrepo="gsharkdown"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to Mercurial server...."
+
+  if [[ -d "$_hgrepo" ]]; then
+    cd "$_hgrepo"
+    # hg pull -u
+    msg "The local files are updated."
+  else
+    hg clone "$_hgroot" "$_hgrepo"
+  fi
+
+  msg "Mercurial checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_hgrepo-build"
+  cp -r "$srcdir/$_hgrepo" "$srcdir/$_hgrepo-build"
+  cd "$srcdir/$_hgrepo-build"
+}
+
+package() {
+  cd "$srcdir/$_hgrepo-build"
+  # bin
+  install -Dm755 ../$_pkgname.sh \
+    "$pkgdir/usr/bin/$_pkgname"
+
+  # data
+  install -d "$pkgdir/usr/share/$_pkgname"
+  cp -a * "$pkgdir/usr/share/$_pkgname"
+
+  # icon
+  install -Dm644 data/gsharkdown_64.png \
+    "$pkgdir/usr/share/pixmaps/$_pkgname.png"
+
+  # desktop file
+  install -Dm644 ../$_pkgname.desktop \
+    "$pkgdir/usr/share/applications/$_pkgname.desktop"
+
+  # suggest to install python2-pylast from AUR
+  find "$pkgdir" -name "*.po" -o -name "*.ui" -exec \
+    sed -i "s/Please.*it/Install python2-pylast from [AUR]/" {} \;
+
+  # python2 fix
+  sed -i "s|env python|&2|" `grep -rl "env python" "$pkgdir"`
+}
+
+# vim:set ts=2 sw=2 et:
