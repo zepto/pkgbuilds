@@ -1,6 +1,6 @@
 # Maintainer: Carlos Franke <carlos_franke at lemtank dot de>
 pkgname=opa-git
-pkgver=20120203
+pkgver=20120229
 pkgrel=1
 pkgdesc="The cloud language"
 arch=('i686' 'x86_64')

@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=spice-gtk
-pkgver=0.9
+pkgver=0.10
 pkgrel=1
 pkgdesc="A Gtk client and libraries for SPICE remote desktop servers"
 arch=(i686 x86_64)
@@ -9,8 +9,8 @@ license=('LGPL2.1')
 depends=(spice-protocol gstreamer0.10 celt051 gtk3 openssl pixman)
 makedepends=(spice-protocol gstreamer0.10 celt051 gtk3 openssl pixman)
 source=(http://spice-space.org/download/gtk/$pkgname-$pkgver.tar.bz2)
-md5sums=('29dd7372ac099aedb4d024fc4eacd374')
-sha256sums=('f07246b79aa3d77f399983843f5e08143b82f3be7d0e4bc76f52e44554ab119e')
+md5sums=('5f3e49f3634a229af9b1679540c23019')
+sha256sums=('27d2cc0e241f8e90153048d5dc352c937c3d0875baa8d74614501bcc18138b38')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
