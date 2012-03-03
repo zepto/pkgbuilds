@@ -1,7 +1,7 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=spice-gtk
 pkgver=0.10
-pkgrel=1
+pkgrel=5
 pkgdesc="A Gtk client and libraries for SPICE remote desktop servers"
 arch=(i686 x86_64)
 url="http://spice-space.org/page/Spice-Gtk"
