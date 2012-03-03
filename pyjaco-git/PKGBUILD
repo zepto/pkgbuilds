@@ -35,6 +35,8 @@ package() {
   cd "$srcdir/$_gitname-build"
   python2 setup.py install --root="$pkgdir/" --optimize=1
   mv "$pkgdir"/usr/pyjaco/* "$pkgdir"/usr/lib/python2.7/site-packages/pyjaco
+  install -d -m 755 "$pkgdir"/usr/share/pyjaco-git/
+  cp -a examples "$pkgdir"/usr/share/pyjaco-git/
 }
 
 # vim:set ts=2 sw=2 et:
