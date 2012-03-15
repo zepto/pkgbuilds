@@ -1,24 +1,48 @@
-# Contributor: Josiah Gordon <josiahg@gmail.com>
-pkgname=webbrowser
-pkgver=0.0.17
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=webbrowser-git
+pkgver=20120315
 pkgrel=1
 pkgdesc="A python webkit web browser."
 arch=(any)
-install=webbrowser.install
 url="lime.tree"
 license=('GPL3')
 depends=(python2 pygtk pywebkitgtk pygobject python-imaging python-wnck python-lxml xdg-utils dbus-python vte aria2 lsof wget)
 optdepends=(python2-pyinotify)
-options=()
-source=($pkgname-$pkgver.tar.xz)
-md5sums=('977e87b6d5ae943884b43ed3f621f0a7')
-sha256sums=('2f36bd359822fb24b4dc6bb1637fb591cbd948a2c52a80e87627d2fc283806cf')
+makedepends=('git')
+provides=(webbrowser)
+conflicts=(webbrowser)
+replaces=(webbrowser)
+install=webbrowser.install
+
+_gitroot=josiah@cherry.tree:git/python/webbrowser.git
+_gitname=webbrowser.git
 
 build() {
-  python=$(which python2)
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
 
-  #default_apps_dir=$(pkg-config --variable=defappsdir gnome-default-applications)
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  python=$(which python2)
   default_apps_dir='/usr/share/gnome-control-center/default-apps'
 
   install -d "$pkgdir/usr/lib"
