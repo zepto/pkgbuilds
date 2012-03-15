@@ -1,0 +1,45 @@
+# Contributor: Josiah Gordon <josiahg@gmail.com>
+pkgname=webbrowser
+pkgver=0.0.17
+pkgrel=1
+pkgdesc="A python webkit web browser."
+arch=(any)
+install=webbrowser.install
+url="lime.tree"
+license=('GPL3')
+depends=(python2 pygtk pywebkitgtk pygobject python-imaging python-wnck python-lxml xdg-utils dbus-python vte aria2 lsof wget)
+optdepends=(python2-pyinotify)
+options=()
+source=($pkgname-$pkgver.tar.xz)
+md5sums=('977e87b6d5ae943884b43ed3f621f0a7')
+sha256sums=('2f36bd359822fb24b4dc6bb1637fb591cbd948a2c52a80e87627d2fc283806cf')
+
+build() {
+  python=$(which python2)
+  cd "$srcdir/$pkgname-$pkgver"
+
+  #default_apps_dir=$(pkg-config --variable=defappsdir gnome-default-applications)
+  default_apps_dir='/usr/share/gnome-control-center/default-apps'
+
+  install -d "$pkgdir/usr/lib"
+  install -D -m 755 webbrowser.sh "$pkgdir/usr/bin/webbrowser"
+  install -D -m 644 webbrowser.desktop "$pkgdir/usr/share/applications/webbrowser.desktop"
+  install -d "$pkgdir/usr/share/doc/$pkgname-$pkgver"
+  install -d "$pkgdir$default_apps_dir"
+  install -D -m 644 webbrowser.xml "$pkgdir$default_apps_dir/webbrowser.xml"
+
+  cp -r webbrowser "$pkgdir/usr/lib"
+
+  echo "Byte-compiling python modules"
+  # Generate normal (.pyc) byte-compiled files.
+  $python    -c 'import compileall; compileall.compile_dir("'"$pkgdir/usr/lib/webbrowser"'")' > /dev/null
+  # Generate optimized (.pyo) byte-compiled files.
+  $python -O -c 'import compileall; compileall.compile_dir("'"$pkgdir/usr/lib/webbrowser"'")' > /dev/null
+
+  cp -r defaults "$pkgdir/usr/share/doc/$pkgname-$pkgver"
+  cp -r plugin_templates "$pkgdir/usr/share/doc/$pkgname-$pkgver"
+
+  install -D -m 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:
