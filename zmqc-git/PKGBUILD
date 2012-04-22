@@ -1,0 +1,43 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=zmqc-git
+pkgver=20120407
+pkgrel=1
+pkgdesc="netcat for ØMQ. Small but powerful"
+arch=(i686 x86_64)
+url="http://zacharyvoase.github.com/zmqc/"
+license=('custom')
+depends=(python2 python2-pyzmq)
+makedepends=('git' 'python2')
+
+_gitroot=https://github.com/zacharyvoase/zmqc
+_gitname=zmqc
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  python2 setup.py install --root="$pkgdir/"
+}
+
+# vim:set ts=2 sw=2 et:
