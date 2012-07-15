@@ -1,0 +1,21 @@
+# Maintainer: Sam S. <smls75@gmail.com>
+
+pkgname=mnemosyne
+pkgver=2.0
+pkgrel=0
+pkgdesc="A flash-card tool with a sophisticated card review algorithm"
+arch=('i686' 'x86_64')
+url='http://www.mnemosyne-proj.org'
+license=('GPL')
+depends=('python2-pyqt' 'python2-matplotlib' 'python2-cherrypy')
+makedepends=('python2-distribute')
+optdepends=('texlive-core: support for mathematical formulae in cards')
+conflicts=('mnemosyne-bzr')
+install='mnemosyne.install'
+source=("http://downloads.sourceforge.net/project/mnemosyne-proj/mnemosyne/mnemosyne-${pkgver}/Mnemosyne-${pkgver}.tar.gz")
+md5sums=('026b1b448f8363fccba47fa8581c1456')
+
+build() {
+  cd "${srcdir}/Mnemosyne-${pkgver}/"
+  python2 setup.py install --root="${pkgdir}"
+}
