@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=musio-git
-pkgver=20120809
+pkgver=20120902
 pkgrel=1
 pkgdesc="A python audio I/O library."
 arch=(any)
@@ -14,7 +14,7 @@ conflicts=(musio)
 replaces=(musio)
 
 _gitroot=josiah@cherry.tree:git/python/musio.git
-_gitname=webbrowser.git
+_gitname=musio.git
 
 build() {
   cd "$srcdir"
@@ -45,9 +45,9 @@ package() {
 
   $python setup.py install --root="$pkgdir"
 
-  install -d "$pkgdir/usr/share/docs/$pkgname"
+  install -d "$pkgdir/usr/share/doc/$pkgname"
 
-  cp -r utils examples "$pkgdir/usr/share/docs/$pkgname"
+  cp -r utils examples "$pkgdir/usr/share/doc/$pkgname"
 
   install -D -m 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/license.txt"
 }

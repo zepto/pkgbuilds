@@ -1,0 +1,40 @@
+# Maintainer: Josiah Gordon <josiah@gmail.com>
+pkgname=libxmp
+pkgver=3.9.4
+pkgrel=1
+pkgdesc="Portable command-line module player library"
+arch=(i686)
+url="http://xmp.sourceforge.net"
+license=('GPL')
+depends=()
+makedepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=(http://helllabs.org/xmp/testing/$pkgname-$pkgver.tar.gz)
+noextract=()
+md5sums=() #generate with 'makepkg -g'
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make -k check
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir/" install
+}
+
+# vim:set ts=2 sw=2 et:
+md5sums=('72964e583163de4d45b076106e31d1df')
+sha256sums=('ea20d3c8b1b48750acae7d98189535fb551c72336c2b13e8055bb71ce05891dc')

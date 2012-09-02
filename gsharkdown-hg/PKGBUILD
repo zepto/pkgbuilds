@@ -1,7 +1,7 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=gsharkdown-hg
 _pkgname=gsharkdown
-pkgver=322
+pkgver=329
 pkgrel=1
 pkgdesc="Application for downloading and playing music from grooveshark.com"
 arch=('any')
