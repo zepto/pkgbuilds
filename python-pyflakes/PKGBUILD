@@ -3,7 +3,7 @@
 # Contributor: Tiago Pierezan Camargo <tcamargo@gmail.com>
 
 pkgname=python-pyflakes
-pkgver=0.4.2
+pkgver=0.4.3
 pkgrel=1
 pkgdesc='A lint-like tool for Python to identify common errors quickly without executing code'
 arch=('any')
@@ -14,7 +14,7 @@ provides=('pyflakes3k')
 conflicts=('pyflakes3k')
 replaces=('pyflakes3k')
 source=("http://pypi.python.org/packages/source/p/pyflakes3k/pyflakes3k-${pkgver}.tar.gz")
-md5sums=('48b6cd42e482aeef9bc699433b61d995')
+md5sums=('9e633883b3e2cae91bc4a5d48bd895f3')
 
 build() {
   cd pyflakes3k-${pkgver}

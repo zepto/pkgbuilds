@@ -2,7 +2,7 @@
 
 pkgname=python-sword
 pkgver=1.6.2
-pkgrel=6
+pkgrel=7
 pkgdesc="Python bindings for SWORD"
 arch=(i686 x86_64)
 url="http://www.crosswire.org/sword/index.jsp"
@@ -25,7 +25,7 @@ build() {
 
   libtoolize --force
   ./autogen.sh
-  ./configure --prefix=/usr --sysconfdir=/etc
+  CFLAGS=-fpermissive CXXFLAGS=-fpermissive ./configure --prefix=/usr --sysconfdir=/etc
   make pythonswig
   make python_make
 }

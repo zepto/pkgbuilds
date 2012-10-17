@@ -10,7 +10,7 @@ pkgdesc="Analyzes Python code looking for bugs and signs of poor quality"
 arch=('any')
 url="http://www.logilab.org/project/pylint"
 license=('GPL')
-depends=('python-logilab-astng' 'python')
+depends=('python3-logilab-astng' 'python')
 makedepends=('python-distribute')
 optdepends=('tk: Pylint GUI')
 source=("http://ftp.logilab.org/pub/${pkgbase}/${pkgbase}-${pkgver}.tar.gz")
@@ -21,7 +21,7 @@ build() {
 
   #sed -i "s|/usr/bin/env python|/usr/bin/env python2|" epylint.py
 
-  python setup.py build 
+  python setup.py build
 }
 
 

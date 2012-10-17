@@ -23,7 +23,7 @@ build() {
   sed -i 's/1\.5\.[[:alnum:]]*/1\.6\.2/g' configure.ac
   libtoolize --force
   ./autogen.sh
-  ./configure --prefix=/usr --sysconfdir=/etc --with-lucene --with-icu --with-python=/usr/bin/pypy
+  CFLAGS=-fpermissive CXXFLAGS=-fpermissive ./configure --prefix=/usr --sysconfdir=/etc --with-lucene --with-icu --with-python=/usr/bin/pypy
   make pythonswig
   make python_make
 }
