@@ -1,12 +1,12 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=webbrowser-git
-pkgver=20120331
+pkgver=20121018
 pkgrel=1
 pkgdesc="A python webkit web browser."
 arch=(any)
 url="lime.tree"
 license=('GPL3')
-depends=(python2 pygtk pywebkitgtk pygobject python-imaging python-wnck python-lxml xdg-utils dbus-python vte aria2 lsof wget)
+depends=(python2 pygtk pywebkitgtk python2-gobject python2-imaging python2-wnck python2-lxml xdg-utils python2-dbus vte aria2 lsof wget)
 optdepends=(python2-pyinotify)
 makedepends=('git')
 provides=(webbrowser)
@@ -14,7 +14,7 @@ conflicts=(webbrowser)
 replaces=(webbrowser)
 install=webbrowser.install
 
-_gitroot=josiah@cherry.tree:git/python/webbrowser.git
+_gitroot=git://github.com/zepto/webbrowser.git
 _gitname=webbrowser.git
 
 build() {
