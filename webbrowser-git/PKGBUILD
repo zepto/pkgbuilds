@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=webbrowser-git
-pkgver=20121018
+pkgver=20121023
 pkgrel=1
 pkgdesc="A python webkit web browser."
 arch=(any)
@@ -46,6 +46,7 @@ package() {
   default_apps_dir='/usr/share/gnome-control-center/default-apps'
 
   install -d "$pkgdir/usr/lib"
+  sed -i "s/VERSION=/VERSION=git-${pkgver}/g" webbrowser.sh
   install -D -m 755 webbrowser.sh "$pkgdir/usr/bin/webbrowser"
   install -D -m 644 webbrowser.desktop "$pkgdir/usr/share/applications/webbrowser.desktop"
   install -d "$pkgdir/usr/share/doc/$pkgname-$pkgver"
