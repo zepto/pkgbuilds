@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=webbrowser-git
-pkgver=20121023
+pkgver=20121027
 pkgrel=1
 pkgdesc="A python webkit web browser."
 arch=(any)

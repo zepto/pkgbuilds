@@ -1,6 +1,6 @@
 # Contributor: Guillem Rieu <guillemr@gmx.net>
 pkgname=gccxml-cvs
-pkgver=20120808
+pkgver=20121026
 pkgrel=1
 pkgdesc="GCC-XML generates an XML description of a C++ program from GCC's internal representation"
 arch=(i686 x86_64)

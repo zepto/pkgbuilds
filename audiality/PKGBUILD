@@ -10,13 +10,13 @@ depends=(sdl bash alsa-lib)
 makedepends=(sdl)
 options=(!libtool)
 install=audiality.install
-source=(Audiality-$pkgver.tar.gz)
+source=(http://audiality.org/download/Audiality-$pkgver.tar.gz)
 md5sums=('351aee46efd9497cc72feb0b0512a77b')
 
 build() {
   cd "$srcdir/Audiality-$pkgver"
 
-  ./configure --prefix=/usr --libdir=/usr/lib --includedir=/usr/include --enable-shared=yes --enable-static=no 
+  ./configure --prefix=/usr --libdir=/usr/lib --includedir=/usr/include --enable-shared=yes --enable-static=no
   make || return 1
   make DESTDIR="$pkgdir/" install
 

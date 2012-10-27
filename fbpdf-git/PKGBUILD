@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=fbpdf-git
-pkgver=20110123
+pkgver=20121026
 pkgrel=1
 pkgdesc="a small framebuffer pdf viewer"
 arch=(i686 x86_64)

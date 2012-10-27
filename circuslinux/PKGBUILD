@@ -1,0 +1,42 @@
+# Maintainer: Josiah Gordon  <josiahg@gmail.com>
+pkgname=circuslinux
+pkgver=1.0.3
+pkgrel=2
+pkgdesc="A fun breakout like game"
+arch=(i686 x86_64)
+url="http://www.newbreedsoftware.com/circus-linux/"
+license=('GPL2')
+makedepends=(sdl_image sdl_sound)
+depends=(sdl_image sdl_sound)
+source=(ftp://ftp.tuxpaint.org/unix/x/circus-linux/src/${pkgname}-${pkgver}.tar.gz)
+md5sums=('d53f7d28d974c5605d6bebb9b1569216')
+sha256sums=('bf9550ebd598a9e7d93a20d80ff466475122f8b023314bb1e07c31e8c608ce8a')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  cp /usr/share/libtool/config/{config.sub,depcomp} ./
+  libtoolize
+  sh autogen.sh
+  sed -i 's/circuslinux_CFLAGS = CFLAGS/circuslinux_CFLAGS = $(CFLAGS)/g' Makefile.in
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make -k check
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  # make DESTDIR="$pkgdir/" install
+  install -dm755 $pkgdir/usr/share/$pkgname/data
+  cp -r data/{music,images,sounds} $pkgdir/usr/share/$pkgname/data
+  install -dm755 $pkgdir/usr/bin
+  install -Dm755 circuslinux $pkgdir/usr/bin/circuslinux
+  install -Dm755 COPYING.txt $pkgdir/usr/share/$pkgname/COPYING.txt
+  install -Dm755 README.txt $pkgdir/usr/share/$pkgname/README.txt
+  install -Dm755 CHANGES.txt $pkgdir/usr/share/$pkgname/CHANGES.txt
+}
+
+# vim:set ts=2 sw=2 et:
