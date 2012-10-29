@@ -1,0 +1,47 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=check50-git
+pkgver=20121029
+pkgrel=1
+pkgdesc="cs50 check50 script to check psets"
+arch=(any)
+url="https://github.com/cs50/check50"
+license=('CCPL')
+depends=(nodejs php)
+makedepends=(nodejs)
+
+_gitroot=https://github.com/cs50/check50
+_gitname=check50
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  install -dm755 $pkgdir/usr/bin
+  install -dm755 $pkgdir/usr/lib
+  mv SOURCES/opt/check50/lib/node_modules/ $pkgdir/usr/lib/
+  for name in check50 check50.js
+  do
+    sed -i 's_/bin/env_/usr/bin/env_g' SOURCES/opt/check50/bin/$name
+    sed -i 's_nodejs_node_g' SOURCES/opt/check50/bin/$name
+    install -Dm755 SOURCES/opt/check50/bin/$name $pkgdir/usr/bin/$name
+  done
+}
+
+# vim:set ts=2 sw=2 et:

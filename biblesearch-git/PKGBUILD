@@ -1,0 +1,42 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+_pkgname=search_new.py
+pkgname=biblesearch-git
+pkgver=20121028
+pkgrel=1
+pkgdesc="A python sword bible indexer and searcher."
+arch=(any)
+url="http://github.com/zepto/biblesearch"
+license=('GPL3')
+depends=(python python-sword)
+makedepends=('git')
+
+_gitroot=git://github.com/zepto/biblesearch.git
+_gitname=biblesearch
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+
+  install -d "$pkgdir/usr/bin"
+  install -D -m 755 $_pkgname "$pkgdir/usr/bin/biblesearch"
+}
+
+# vim:set ts=2 sw=2 et:

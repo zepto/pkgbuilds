@@ -1,0 +1,26 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+_pkgname=request
+pkgname=nodejs-request
+pkgver=2.11.4
+pkgrel=1
+pkgdesc="Simplified HTTP request client"
+arch=(any)
+url="https://github.com/mikeal/request"
+license=('APACHE')
+depends=(nodejs)
+makedepends=(nodejs)
+source=(http://registry.npmjs.org/$_pkgname/-/$_pkgname-$pkgver.tgz)
+noextract=($_pkgname-$pkgver.tgz)
+md5sums=('4becd3b6659e6a7067d12caf4027cfec')
+sha256sums=('9da760beead672fc69ce1d0d01e579824b7ef9a961ff1346cf3fce80beb9f8a4')
+
+package() {
+  cd "$srcdir"
+  local _npmdir="$pkgdir/usr/lib/node_modules/"
+  mkdir -p $_npmdir
+  cd $_npmdir
+  npm install -g --prefix "$pkgdir/usr" $_pkgname@$pkgver
+  chown root.root $pkgdir -R
+}
+
+# vim:set ts=2 sw=2 et:

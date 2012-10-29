@@ -1,13 +1,13 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=fbpdf-git
-pkgver=20121026
+pkgver=20121027
 pkgrel=1
 pkgdesc="a small framebuffer pdf viewer"
 arch=(i686 x86_64)
 url="http://repo.or.cz/w/fbpdf.git"
 license=('GPL')
-depends=('mupdf')
-makedepends=('git')
+depends=('mupdf' 'djvulibre')
+makedepends=('git' 'djvulibre')
 provides=('fbpdf')
 conflicts=('fbpdf')
 source=(fbpdf_32bit.patch fbpdf_fix.patch clear_screen.patch)
@@ -44,7 +44,7 @@ build() {
   #
 
   #patch -p0 < ../fbpdf_fix.patch
-  patch -p0 < ../clear_screen.patch
+  # patch -p0 < ../clear_screen.patch
   make
 }
 
