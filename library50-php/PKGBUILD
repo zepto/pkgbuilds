@@ -1,0 +1,26 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=library50-php
+pkgver=2.2
+pkgrel=1
+pkgdesc="php library for cs50"
+arch=(any)
+url="http://mirror-local.cs50.net/appliance50/17/i386/RPMS/"
+license=('BSD')
+makedepends=(rpmextract)
+depends=(php)
+source=(http://mirror-local.cs50.net/appliance50/17/i386/RPMS/${pkgname}-2-2.noarch.rpm)
+md5sums=('3b9f4c83365b307ab1efd287065b4375')
+sha256sums=('50101ce0025fb84b436ea09fe59aeed9578c3dc404ab9ff6315c33969e6a552d')
+
+build() {
+  cd "$srcdir"
+  # rpmextract.sh ${pkgname}-${pkgver}-2.noarch.rpm
+}
+
+package() {
+  cd "$srcdir"
+  install -dm755 ${pkgdir}/usr/share/pear
+  cp -r usr/share/php/CS50 ${pkgdir}/usr/share/pear/CS50
+}
+
+# vim:set ts=2 sw=2 et:
