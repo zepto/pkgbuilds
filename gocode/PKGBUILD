@@ -4,8 +4,8 @@
 _tagname=go1
 pkgname=gocode
 pkgver=1
-pkgrel=1
-epoch=1
+pkgrel=3
+epoch=2
 pkgdesc="An autocompletion/refactoring daemon for the Go programming language"
 arch=(i686 x86_64)
 url="https://github.com/nsf/gocode"
@@ -13,7 +13,6 @@ license=('GPL')
 depends=('go')
 makedepends=('git')
 optdepends=('auto-complete: emacs autocompletion')
-options=(!strip)
 
 # Extra underscore to stop the automatic pkgver update
 __gitroot="https://github.com/nsf/gocode.git"
@@ -35,7 +34,6 @@ build() {
 
   rm -rf "$srcdir/src"
   mkdir -p "$srcdir/src"
-  cd "$srcdir/src"
   git clone "$srcdir/$__gitname" "$srcdir/src/$__gitname"
   cd "$srcdir/src/$__gitname"
   # git checkout $_tagname
@@ -44,8 +42,7 @@ build() {
 }
 
 package() {
-  cd "$srcdir"
-  cd src/$__gitname
+  cd "$srcdir/src/$__gitname"
   install -Dm755 gocode "$pkgdir/usr/bin/gocode"
   install -Dm644 vim/autoload/gocomplete.vim "$pkgdir/usr/share/vim/vimfiles/autoload/gocomplete.vim"
   install -Dm644 vim/ftplugin/go.vim "$pkgdir/usr/share/vim/vimfiles/ftplugin/go.vim"
