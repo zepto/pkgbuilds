@@ -1,0 +1,27 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=php-ncurses
+pkgver=1.0.2
+pkgrel=1
+pkgdesc="Terminal screen handling and optimization package"
+arch=(i686 x86_64)
+url="http://pecl.php.net/package/ncurses"
+depends=('php')
+license=('PHP')
+source=("http://pecl.php.net/get/ncurses-$pkgver.tgz")
+md5sums=('a466d1b3e556cda67274ba6c36239c48')
+sha256sums=('7fa4998d06a00a094276e5283fd6a408cbf78cd2d3b889fe6ab51be3780c9063')
+
+build() {
+  cd "$srcdir/ncurses-$pkgver"
+  phpize
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/ncurses-$pkgver"
+  make INSTALL_ROOT=$pkgdir install
+  install -D -m644 ncurses.php $pkgdir/usr/share/php-ncurses/ncurses.php
+}
+
+# vim:set ts=2 sw=2 et:
