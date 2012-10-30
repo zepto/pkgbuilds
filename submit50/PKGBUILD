@@ -1,0 +1,28 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=submit50
+pkgver=2.4
+pkgrel=1
+pkgdesc="submit50 script for submitting psets for cs50"
+arch=(any)
+url="http://mirror-local.cs50.net/appliance50/17/i386/RPMS/"
+license=('CCPL')
+makedepends=(rpmextract)
+depends=(php php-ncurses)
+source=(http://mirror-local.cs50.net/appliance50/17/i386/RPMS/${pkgname}-${pkgver}-0.noarch.rpm)
+md5sums=('d4badcdfe77b54f300e78845e3a55060')
+sha256sums=('a6bde0d0503284318b70165c66f05efc8c72929c23f358526a4a2e202cb620e5')
+
+build() {
+  cd "$srcdir"
+  rpmextract.sh ${pkgname}-${pkgver}-0.noarch.rpm
+}
+
+package() {
+  cd "$srcdir"
+  sed -i "s|__DIR__ . '/../share/|'submit50/|g" opt/submit50/bin/submit50
+  sed -i 's_/bin/env_/usr/bin/env_g' opt/submit50/bin/submit50
+  install -Dm755 opt/submit50/bin/submit50 ${pkgdir}/usr/bin/submit50
+  install -Dm644 opt/submit50/share/CLInput.php ${pkgdir}/usr/share/pear/submit50/CLInput.php
+}
+
+# vim:set ts=2 sw=2 et:
