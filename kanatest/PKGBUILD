@@ -1,0 +1,33 @@
+# Contributor: Bjorn Lindeijer <bjorn lindeijer nl>
+pkgname=kanatest
+pkgver=0.4.8
+pkgrel=5
+pkgdesc="A simple Hiragana and Katakana drill tool"
+arch=('i686' 'x86_64')
+url="http://www.clayo.org/kanatest/"
+license=('GPL')
+depends=('gtk2' 'libxml2')
+optdepends=('ttf-freefont: for using FreeSerif or FreeSans fonts'
+            'ttf-arphic-uming: for using AR PL ShanHeiSun Uni font'
+            'ttf-arphic-ukai: for using AR PL ZenKai Uni font')
+install='kanatest.install'
+source=(kanatest.desktop
+        https://launchpad.net/ubuntu/+archive/primary/+files/kanatest_0.4.8.orig.tar.gz
+        https://launchpad.net/ubuntu/+archive/primary/+files/kanatest_0.4.8-2ubuntu1.diff.gz)
+md5sums=('19e06e277f76958582ba5cc456c814a9'
+         'b97b0521314f634e454354cb7ba2013d'
+         '5026200afb7a590d4b14baee54184ca2')
+
+build() {
+  cd "${srcdir}/kanatest-0.4.8"
+  patch -p1 < ../kanatest_0.4.8-2ubuntu1.diff
+  patch -p1 < debian/patches/001_PATH_MAX_fix.diff
+  patch -p1 < debian/patches/002_updated_emails_and_links.patch
+  patch -p1 < debian/patches/003_gtk_ftbfs_fix.patch
+  patch -p1 < debian/patches/004_enable_deprecated.patch
+  cp ../kanatest.desktop data/
+
+  ./configure --prefix=/usr || return 1
+  make || return 1
+  make DESTDIR="$pkgdir" install || return 1
+}
