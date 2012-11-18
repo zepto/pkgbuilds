@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=submit50
-pkgver=2.4
+pkgver=2.5
 pkgrel=1
 pkgdesc="submit50 script for submitting psets for cs50"
 arch=(any)
@@ -9,8 +9,8 @@ license=('CCPL')
 makedepends=(rpmextract)
 depends=(php php-ncurses)
 source=(http://mirror-local.cs50.net/appliance50/17/i386/RPMS/${pkgname}-${pkgver}-0.noarch.rpm)
-md5sums=('d4badcdfe77b54f300e78845e3a55060')
-sha256sums=('a6bde0d0503284318b70165c66f05efc8c72929c23f358526a4a2e202cb620e5')
+md5sums=('1b00032d4a436fba8c26313448302680')
+sha256sums=('41cf2f20ab5f4206544066c2075ed283d65058638202bd6c732e9d8e1f38d809')
 
 build() {
   cd "$srcdir"
