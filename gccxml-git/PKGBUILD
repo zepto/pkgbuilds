@@ -1,15 +1,7 @@
-# This is an example PKGBUILD file. Use this as a start to creating your own,
-# and remove these comments. For more information, see 'man PKGBUILD'.
-# NOTE: Please fill out the license field for your package! If it is unknown,
-# then please put 'unknown'.
-
-# See http://wiki.archlinux.org/index.php/VCS_PKGBUILD_Guidelines
-# for more information on packaging from GIT sources.
-
 # Contributor: Guillem Rieu <guillemr@gmx.net>
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=gccxml-git
-pkgver=20121111
+pkgver=20121118
 pkgrel=1
 pkgdesc="GCC-XML generates an XML description of a C++ program from GCC's internal representation"
 arch=(i686 x86_64)
