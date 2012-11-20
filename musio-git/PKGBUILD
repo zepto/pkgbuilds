@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=musio-git
-pkgver=20121117
+pkgver=20121120
 pkgrel=1
 pkgdesc="A python audio I/O library."
 arch=(any)
@@ -47,9 +47,9 @@ package() {
 
   install -d "$pkgdir/usr/share/doc/$pkgname"
 
-  cp -r utils examples "$pkgdir/usr/share/doc/$pkgname"
+  cp -r README.txt utils examples "$pkgdir/usr/share/doc/$pkgname"
 
-  install -D -m 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+  install -D -m 644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/license.txt"
 }
 
 # vim:set ts=2 sw=2 et:
