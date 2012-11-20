@@ -1,0 +1,28 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=library50-c
+pkgver=4
+pkgrel=1
+pkgdesc="cs50 c library"
+arch=(i686 x86_64)
+url="http://manual.cs50.net/CS50_Library"
+license=('BSD')
+makedepends=(gcc)
+source=(http://mirror.cs50.net/library50/c/${pkgname}-${pkgver}.zip)
+md5sums=('d2eb0029ab60b7dd97541fa0eacada60')
+sha256sums=('27c5132e67fef1db7ffdc8c930f330f99c314e613f1583c5fa91660166ee5473')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  gcc -c -ggdb -std=c99 cs50.c -o cs50.o
+  ar rcs libcs50.a cs50.o
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  install -dm755 $pkgdir/usr/include
+  install -dm755 $pkgdir/usr/lib
+  install -Dm644 cs50.h $pkgdir/usr/include/cs50.h
+  install -Dm644 libcs50.a $pkgdir/usr/lib/libcs50.a
+}
+
+# vim:set ts=2 sw=2 et:
