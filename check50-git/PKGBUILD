@@ -8,6 +8,7 @@ url="https://github.com/cs50/check50"
 license=('CCPL')
 depends=(nodejs php)
 makedepends=(nodejs)
+provides=(check50)
 
 _gitroot=https://github.com/cs50/check50
 _gitname=check50

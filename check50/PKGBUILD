@@ -1,0 +1,35 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=check50
+pkgver=1.12
+pkgrel=1
+pkgdesc="cs50 check50 script to check psets"
+arch=(any)
+url="http://mirror-local.cs50.net/appliance50/17/i386/RPMS/"
+license=('CCPL')
+makedepends=(nodejs rpmextract)
+depends=(nodejs php)
+provides=(check50)
+conflicts=(check50-git)
+source=(http://mirror-local.cs50.net/appliance50/17/i386/RPMS/${pkgname}-${pkgver}-0.noarch.rpm)
+md5sums=('d236ba5b1b73080ac6d04a07efefba4d')
+sha256sums=('e0fa71752ad3822f64c12a4dd08abef3bdda2be02754ece8fc7c2ea072b28d53')
+
+build() {
+  cd "$srcdir"
+  rpmextract.sh ${pkgname}-${pkgver}-0.noarch.rpm
+}
+
+package() {
+  cd "$srcdir"
+  install -dm755 $pkgdir/usr/bin
+  install -dm755 $pkgdir/usr/lib
+  mv opt/check50/lib/node_modules/ $pkgdir/usr/lib/
+  for name in check50 check50.js
+  do
+    sed -i 's_/bin/env_/usr/bin/env_g' opt/check50/bin/$name
+    sed -i 's_nodejs_node_g' opt/check50/bin/$name
+    install -Dm755 opt/check50/bin/$name $pkgdir/usr/bin/$name
+  done
+}
+
+# vim:set ts=2 sw=2 et:
