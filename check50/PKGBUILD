@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=check50
-pkgver=1.12
+pkgver=1.13
 pkgrel=1
 pkgdesc="cs50 check50 script to check psets"
 arch=(any)
@@ -11,8 +11,8 @@ depends=(nodejs php)
 provides=(check50)
 conflicts=(check50-git)
 source=(http://mirror-local.cs50.net/appliance50/17/i386/RPMS/${pkgname}-${pkgver}-0.noarch.rpm)
-md5sums=('d236ba5b1b73080ac6d04a07efefba4d')
-sha256sums=('e0fa71752ad3822f64c12a4dd08abef3bdda2be02754ece8fc7c2ea072b28d53')
+md5sums=('636a7491bd209937359fa1101aa61bd3')
+sha256sums=('3ef98bc8803bb919428bd1a2bf854e30328c00c8f460f7720f599802e08e224b')
 
 build() {
   cd "$srcdir"

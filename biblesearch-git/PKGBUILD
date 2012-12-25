@@ -1,7 +1,7 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 _pkgname=search_new.py
 pkgname=biblesearch-git
-pkgver=20121028
+pkgver=20121221
 pkgrel=1
 pkgdesc="A python sword bible indexer and searcher."
 arch=(any)
@@ -34,9 +34,15 @@ build() {
 
 package() {
   cd "$srcdir/$_gitname-build"
+  python=$(which python)
 
-  install -d "$pkgdir/usr/bin"
-  install -D -m 755 $_pkgname "$pkgdir/usr/bin/biblesearch"
+  $python setup.py install --root="$pkgdir"
+
+  install -d "$pkgdir/usr/share/doc/$pkgname"
+
+  cp -r README.mkd misc "$pkgdir/usr/share/doc/$pkgname"
+
+  install -D -m 644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/license.txt"
 }
 
 # vim:set ts=2 sw=2 et:
