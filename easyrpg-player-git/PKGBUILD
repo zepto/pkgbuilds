@@ -1,0 +1,47 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=easyrpg-player-git
+pkgver=20130118
+pkgrel=1
+pkgdesc="Play RPG Maker 2k and 2k3 games"
+arch=(i686 x86_64)
+url="http://easy-rpg.org"
+license=('GPL3')
+groups=('emulators')
+depends=('sdl' 'sdl_mixer' 'sdl_ttf' 'sdl_image' 'zlib' 'gtk2' 'doxygen')
+makedepends=('git' 'gcc-objc')
+provides=(easyrpg-player)
+
+_gitroot=https://github.com/EasyRPG/Player
+_gitname=Player
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+  cmake builds/cmake/ -DPYTHON_EXECUTABLE=$(which python2) -DCMAKE_EXE_LINKER_FLAGS=-lfreetype
+  make
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  install -Dm755 bin/EasyRPG_Player ${pkgdir}/usr/bin/EasyRPG_Player
+}
+
+# vim:set ts=2 sw=2 et:

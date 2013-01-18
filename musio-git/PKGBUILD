@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=musio-git
-pkgver=20121230
+pkgver=20130118
 pkgrel=1
 pkgdesc="A python audio I/O library."
 arch=(any)
