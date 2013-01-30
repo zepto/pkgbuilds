@@ -1,0 +1,47 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=clipspeak-git
+pkgver=20130128
+pkgrel=1
+pkgdesc="A python clipboard reader"
+arch=(any)
+url="http://github.com/zepto/clipspeak"
+license=('GPL3')
+depends=(python musio)
+makedepends=('git')
+
+_gitroot=git://github.com/zepto/clipspeak.git
+_gitname=clipspeak
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  python=$(which python)
+
+  $python setup.py install --root="$pkgdir"
+
+  install -d "$pkgdir/usr/share/doc/$pkgname"
+
+  cp -r README.mkd "$pkgdir/usr/share/doc/$pkgname"
+
+  install -D -m 644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:
