@@ -1,29 +1,33 @@
-# Maintainer: Lucio Zara <pennega@gmail.com> 
- 
+# Maintainer: Patryk Kowalczyk < patryk at kowalczyk dot ws>
+     
 pkgname=spice
-pkgver=0.10.1
+pkgver=0.12.2
 pkgrel=1
 pkgdesc="SPICE client and server"
 arch=('x86_64' 'i686')
 url="http://spice-space.org"
 license=('GPL')
-makedepends=(gcc automake libtool pkgconfig)
-depends=(pixman celt0.5.1 spice-protocol alsa-utils libxrandr libjpeg)
+makedepends=(python2-pyparsing)
+depends=(pixman celt0.5.1 spice-protocol alsa-utils libxrandr libxinerama libsasl libcacard )
+
 source=(http://spice-space.org/download/releases/$pkgname-$pkgver.tar.bz2)
-md5sums=('70060129e274241b4a08e23e86de29a3')
-
+md5sums=('23b06b993083cf5b90578054c6f5db58')     
+    
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
-
-  ./configure --prefix=/usr --enable-werror=no \
-    --enable-opengl
-  make WARN_CFLAGS=
-}
-
+      cd "$srcdir/$pkgname-$pkgver"
+      sed -i 's,/usr/bin/env python,/usr/bin/python2,' spice-common/spice_codegen.py
+      PYTHON=python2 \
+      ./configure --prefix=/usr \
+            # --enable-gui \
+            --enable-opengl \
+            --enable-smartcard \
+            --enable-client
+      make
+    }
+     
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-
-  make DESTDIR="$pkgdir/" install
-}
-
-# vim:set ts=2 sw=2 et:
+      cd "$srcdir/$pkgname-$pkgver"
+     
+      make DESTDIR="$pkgdir/" install
+    }
+     
