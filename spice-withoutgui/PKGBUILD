@@ -18,7 +18,6 @@ build() {
       sed -i 's,/usr/bin/env python,/usr/bin/python2,' spice-common/spice_codegen.py
       PYTHON=python2 \
       ./configure --prefix=/usr \
-            # --enable-gui \
             --enable-opengl \
             --enable-smartcard \
             --enable-client
