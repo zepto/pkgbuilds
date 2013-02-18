@@ -2,7 +2,7 @@
      
 pkgname=spice
 pkgver=0.12.2
-pkgrel=1
+pkgrel=4
 pkgdesc="SPICE client and server"
 arch=('x86_64' 'i686')
 url="http://spice-space.org"
