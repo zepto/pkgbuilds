@@ -1,13 +1,13 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=valyriatear
 pkgver=0.5.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Small J-RPG using the HoA engine"
 arch=(i686 x86_64)
 url="http://valyriatear.blogspot.com"
 license=('GPL')
 depends=('glu' 'libgl' 'libjpeg' 'libpng' 'sdl' 'sdl_ttf' 'openal' 'libogg'
-         'libvorbis' 'gettext' 'lua51' 'boost-libs' 'qt')
+         'libvorbis' 'gettext' 'lua51' 'boost-libs' 'qt4')
 makedepends=('cmake')
 source=(http://ablu.fedorapeople.org/$pkgname-$pkgver-rc2.tar.gz)
 md5sums=('633916e74ca9f2094e7bf6b80b7965c9')
