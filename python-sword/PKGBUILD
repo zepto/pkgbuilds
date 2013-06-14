@@ -2,7 +2,7 @@
 
 pkgname=python-sword
 pkgver=1.6.2
-pkgrel=7
+pkgrel=8
 pkgdesc="Python bindings for SWORD"
 arch=(i686 x86_64)
 url="http://www.crosswire.org/sword/index.jsp"
