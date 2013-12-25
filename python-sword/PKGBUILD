@@ -1,8 +1,9 @@
 # Contributor: Dale Ogilvie <pnyli0002@sneakemail.com>
 
 pkgname=python-sword
-pkgver=1.6.2
-pkgrel=8
+_mainver=1.7
+pkgver=1.7.0
+pkgrel=1
 pkgdesc="Python bindings for SWORD"
 arch=(i686 x86_64)
 url="http://www.crosswire.org/sword/index.jsp"
@@ -10,18 +11,23 @@ license="GPL"
 options=()
 depends=('python' 'sword')
 makedepends=('python' 'swig' 'sword')
-source=(http://www.crosswire.org/ftpmirror/pub/sword/source/v1.6/sword-${pkgver}.tar.gz python3_m4.patch)
-md5sums=('a7dc4456e20e915fec46d774b690e305'
+source=("http://www.crosswire.org/ftpmirror/pub/sword/source/v$_mainver/sword-$pkgver.tar.gz" python3_m4.patch)
+md5sums=('c4d9c1664ba73acf490ced2e56ee444f'
          '04913730fbc9dfd4a06d6b6efbdcaf9f')
+sha256sums=('819bb4178e871ac2cbcf2a7765f94314c0051b79f522d02c24f8d9ddddac3501'
+            '712565d6b7af175fa2887b8cea26c73d20cb9cadc810b8e041a35860e9c18f1f')
 
 build() {
   cd $startdir/src/sword-${pkgver}
   # assume sword built with lucene and icu
   #./configure --prefix=/usr --sysconfdir=/etc --with-lucene --with-icu
   cd bindings/swig/package
-  sed -i 's/1\.5\.[[:alnum:]]*/1\.6\.2/g' configure.ac
+  sed -i 's/1\.6\.[[:alnum:]]*/1\.7\.0/g' configure.ac
   patch -p0 < $startdir/src/python3_m4.patch
   sed -i 's_$(SWIG) -python_& -py3_' Makefile.am
+  sed -i 's_import command_import subprocess as command_' Makefile.am
+  sed -i 's|flag_map.has_key(\([^)]*\))|\1 in flag_map|' Makefile.am
+  sed -i 's_iteritems_items_' Makefile.am
 
   libtoolize --force
   ./autogen.sh
@@ -33,5 +39,5 @@ build() {
 package() {
   cd $startdir/src/sword-${pkgver}
   cd bindings/swig/package/python
-  python setup.py install --root=$startdir/pkg
+  python setup.py install --root=${pkgdir}
 }
