@@ -1,7 +1,8 @@
 # Contributor: Dale Ogilvie <pnyli0002@sneakemail.com>
 
 pkgname=python2-sword
-pkgver=1.6.2
+_mainver=1.7
+pkgver=1.7.0
 pkgrel=1
 pkgdesc="Python bindings for SWORD"
 arch=(i686 x86_64)
@@ -12,15 +13,16 @@ depends=('python2' 'sword' 'swig')
 makedepends=('python2')
 # replaces=('sword-python2')
 # conflicts=('sword-python2')
-source=(http://www.crosswire.org/ftpmirror/pub/sword/source/v1.6/sword-${pkgver}.tar.gz)
-md5sums=('a7dc4456e20e915fec46d774b690e305')
+source=("http://www.crosswire.org/ftpmirror/pub/sword/source/v$_mainver/sword-$pkgver.tar.gz")
+md5sums=('c4d9c1664ba73acf490ced2e56ee444f')
+sha256sums=('819bb4178e871ac2cbcf2a7765f94314c0051b79f522d02c24f8d9ddddac3501')
 
 build() {
   cd $startdir/src/sword-${pkgver}
   # assume sword built with lucene and icu
   #./configure --prefix=/usr --sysconfdir=/etc --with-lucene --with-icu
   cd bindings/swig/package
-  sed -i 's/1\.5\.[[:alnum:]]*/1\.6\.0/g' configure.ac
+  sed -i 's/1\.6\.[[:alnum:]]*/1\.7\.0/g' configure.ac
   libtoolize --force
   ./autogen.sh
   ./configure --prefix=/usr --sysconfdir=/etc --with-python=/usr/bin/python2
