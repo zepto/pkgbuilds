@@ -1,0 +1,79 @@
+# Contributor: Maurizio D'Addona <mauritiusdadd@gmail.com>
+# Maintainer: Boqun Feng <boqun.feng@gmail.com>
+
+pkgname=beignet-git
+
+_gitname=beignet
+_gitbranch='master'
+_name='beignet'
+
+pkgver=0.8.0.gf206e98
+pkgrel=1
+pkgdesc="OpenCL Implemenation for Intel IvyBridge"
+arch=('i686' 'x86_64')
+url="http://cgit.freedesktop.org/beignet/"
+license=('LGPL')
+groups=()
+depends=('clang>=3.1' 'llvm>=3.1')
+makedepends=('git' 'cmake>=2.6' 'llvm>=3.1' 'python2')
+provides=('opencl-intel' 'opencl-cpp-headers')
+conflicts=('opencl-intel' 'opencl-cpp-headers')
+source=("$_name::git://anongit.freedesktop.org/${_gitname}#branch=$_gitbranch")
+md5sums=('SKIP')
+
+pkgver()
+{
+  cd "${srcdir}/${_name}"
+  git describe --long --tags | sed 's/^Release_v//;s/([^-]*-g)/r\0/;s/-/./g'
+}
+
+prepare()
+{
+  cd "${srcdir}/${_name}"
+  msg "Patching for python2 interpreter 1/2..."
+  for _file in $(find . -type f); do
+      sed -i -e "s|#![ ]*/usr/bin/env python$|#!/usr/bin/env python2|g"\
+             -e "s|#![ ]*/usr/bin/env python[ ]|#!/usr/bin/env python2 |g" $_file
+  done
+  
+  msg "Patching for python2 interpreter 2/2..."
+  for _file in $(find . -type f -not  \(\
+      -name "*.h"   -or\
+      -name "*.hxx" -or\
+      -name "*.hpp" -or\
+      -name "*.hh"  -or\
+      -name "*.c"   -or\
+      -name "*.cxx" -or\
+      -name "*.cpp" -or\
+      -name "*.cc"  -or\
+      -name "*.cl" \)\
+  ); do
+      sed -i -e "s|^python$|python2|g"\
+          -e "s|^python |python2 |g"\
+          -e "s|\([ =(]\)python |\1python2 |g" $_file
+  done
+}
+
+build()
+{
+  cd "${srcdir}/${_name}"
+  
+  #clang compiler does not work!
+  cmake -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python2\
+        -DCMAKE_INSTALL_PREFIX=/usr\
+        -DCOMPILER=GCC\
+        -DCMAKE_C_CXX_FLAGS="$(llvm-config --ldflags)"\
+        -DCMAKE_SHARED_LINKER_FLAGS="$(llvm-config --ldflags)"\
+        -DCMAKE_EXE_LINKER_FLAGS="$(llvm-config --ldflags)"\
+        -DCMAKE_MODULE_LINKER_FLAGS="$(llvm-config --ldflags)"\
+        .
+  make
+}
+
+package() 
+{
+  cd "${srcdir}/${_name}"
+  make DESTDIR="$pkgdir/" install
+}
+
+# vim:set ts=2 sw=2 et:
