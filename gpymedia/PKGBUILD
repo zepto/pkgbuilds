@@ -1,16 +1,16 @@
 # Contributor: Josiah Gordon <josiahg@gmail.com>
 pkgname=gpymedia
-pkgver=0.6.11
+pkgver=0.7.0
 pkgrel=1
 pkgdesc="A cobbled together Media player."
 arch=(any)
 url="lime.tree"
 license=('GPL3')
 depends=(python timidity++ python-gobject)
-optdepends=(pydumb pyaudiality mplayer adplay)
+optdepends=(adplay musio)
 options=()
 source=($pkgname-$pkgver.tar.xz)
-md5sums=('3d03153fede9699c578dee096778f4ec')
+md5sums=('eafc3e1ef72bea7bb76b14f310a714db')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"

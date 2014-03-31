@@ -32,7 +32,7 @@ build() {
   libtoolize --force
   ./autogen.sh
   CFLAGS=-fpermissive CXXFLAGS=-fpermissive ./configure --prefix=/usr --sysconfdir=/etc
-  make pythonswig
+  # make pythonswig
   make python_make
 }
 
