@@ -2,7 +2,7 @@
 
 pkgname=python-sword
 _mainver=1.7
-pkgver=1.7.0
+pkgver=1.7.3
 pkgrel=1
 pkgdesc="Python bindings for SWORD"
 arch=(i686 x86_64)
@@ -12,9 +12,9 @@ options=()
 depends=('python' 'sword')
 makedepends=('python' 'swig' 'sword')
 source=("http://www.crosswire.org/ftpmirror/pub/sword/source/v$_mainver/sword-$pkgver.tar.gz" python3_m4.patch)
-md5sums=('c4d9c1664ba73acf490ced2e56ee444f'
+md5sums=('bd2ffadaa9f92f7b6e657e323e27a028'
          '04913730fbc9dfd4a06d6b6efbdcaf9f')
-sha256sums=('819bb4178e871ac2cbcf2a7765f94314c0051b79f522d02c24f8d9ddddac3501'
+sha256sums=('5a3d87ff155d5ecb0cfec052ba333b2b74d9273e2cc66fb1ca75747dfd8ea9ea'
             '712565d6b7af175fa2887b8cea26c73d20cb9cadc810b8e041a35860e9c18f1f')
 
 build() {
@@ -32,7 +32,7 @@ build() {
   libtoolize --force
   ./autogen.sh
   CFLAGS=-fpermissive CXXFLAGS=-fpermissive ./configure --prefix=/usr --sysconfdir=/etc
-  # make pythonswig
+  make pythonswig
   make python_make
 }
 

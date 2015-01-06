@@ -1,7 +1,6 @@
 # Contributor: Guillem Rieu <guillemr@gmx.net>
-# Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=gccxml-git
-pkgver=20121118
+pkgver=20130409
 pkgrel=1
 pkgdesc="GCC-XML generates an XML description of a C++ program from GCC's internal representation"
 arch=(i686 x86_64)
@@ -10,49 +9,42 @@ license=('custom')
 depends=()
 makedepends=('git' 'cmake')
 provides=('gccxml')
-conflicts=('gccxml')
-source=(Copyright.txt gccxml-swap.patch)
-md5sums=('2f8b08b32c8c0812ddd083d1bee15091' 'f227de2576a002af55d1e7144889ce45')
+conflicts=('gccxml' 'gccxml-cvs')
+source=(Copyright.txt)
+sha256sums=('262793eb3e32fa9c6eb98c5b6274e4a5dfd6a11311d67f7b5c897865a4eaff65')
 
-_gitroot=git://github.com/gccxml/gccxml.git
-_gitname=gccxml
+_gitroot="git://github.com/gccxml"
+_gitname="gccxml"
 
-build() {
+prepare() {
   cd "$srcdir"
-  msg "Connecting to GIT server...."
 
-  if [[ -d "$_gitname" ]]; then
+  msg "Connecting to GIT server..."
+  if [ -d $_gitname ]; then
     cd "$_gitname" && git pull origin
-    msg "The local files are updated."
+    msg2 "Finished updating the local repository!"
   else
-    git clone "$_gitroot" "$_gitname"
+    git clone "$_gitroot/$_gitname.git" "$srcdir/$_gitname"
+    msg2 "Initial pull complete!"
   fi
 
-  msg "GIT checkout done or server timeout"
-  msg "Starting build..."
+  msg "Configuring..."
+  mkdir -p  "$srcdir/$_gitname-build"
+  cd  "$srcdir/$_gitname-build"
+  cmake "../$_gitname" -DCMAKE_INSTALL_PREFIX:PATH=/usr
+}
 
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-  cd "$srcdir/$_gitname-build"
-
-  # Apply patch 
-  # http://public.kitware.com/Bug/bug_relationship_graph.php?bug_id=13430
-  patch -p1 -i $srcdir/gccxml-swap.patch
-
-  mkdir build
-  cd build
-  cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=/usr || return 1
-  make || return 1
+build() {
+  cd  "$srcdir/$_gitname-build"
+  make
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
-  cd build
-  make DESTDIR="$startdir/pkg" install || return 1
+  cd  "$srcdir/$_gitname-build"
+  make DESTDIR="$pkgdir/" install
 
-  install -D -m644 $srcdir/Copyright.txt $startdir/pkg/usr/share/licenses/$pkgname/Copyright.txt || return 1
-
-  rm -r $startdir/src/$_gitname-build
+  install -D -m644 "$srcdir/Copyright.txt" "$pkgdir/usr/share/licenses/$pkgname/Copyright.txt"
 }
 
 # vim:set ts=2 sw=2 et:
+
