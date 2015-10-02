@@ -14,7 +14,10 @@ md5sums=('eafc3e1ef72bea7bb76b14f310a714db')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+}
 
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
   python setup.py install --root="$pkgdir"
 
   install -D -m 644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/license.txt"

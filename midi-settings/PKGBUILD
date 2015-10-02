@@ -14,6 +14,10 @@ sha256sums=('685bc4e36dcf0543132bb94394e2c4a79d6d15293b6d3671dc2297f4a43b86a6')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
 
   sed -i -e '/^OnlyShowIn/d' $pkgname.desktop
 
