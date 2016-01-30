@@ -6,7 +6,7 @@ pkgdesc="A python clipboard reader"
 arch=(any)
 url="http://github.com/zepto/clipspeak"
 license=('GPL3')
-depends=(python musio)
+depends=(python musio python-gobject)
 makedepends=('git')
 
 _gitroot=git://github.com/zepto/clipspeak.git
