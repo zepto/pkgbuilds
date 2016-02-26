@@ -1,0 +1,12 @@
+--- main_orig.c	2016-02-25 22:04:29.107218547 -0600
++++ main.c	2016-02-25 22:04:26.313897904 -0600
+@@ -159,7 +159,8 @@
+   aa_flush (context);
+   if (tolower (aa_getkey (context, 1)) != 'n')
+     {
+-      MikMod_RegisterAllDrivers ();
++      // MikMod_RegisterAllDrivers ();
++      MikMod_RegisterDriver(&drv_oss);
+       MikMod_RegisterLoader (&load_s3m);
+       /*md_mode |= DMODE_SOFT_MUSIC; */
+       while (1)

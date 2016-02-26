@@ -5,8 +5,8 @@ post_upgrade() {
   echo 'BB is old and unmaintained'
   echo
   echo 'Currently, it hangs if you run it with music turned on!'
-  echo
-  echo 'You can still listen to the music though, or play it without music. :('
+  echo 'To avoid this it has been patched to use oss only.'
+  echo 'To run use "aoss bb"'
   echo
 }
 
