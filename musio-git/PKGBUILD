@@ -47,7 +47,7 @@ package() {
 
   install -d "$pkgdir/usr/share/doc/$pkgname"
 
-  cp -r README.mkd utils examples "$pkgdir/usr/share/doc/$pkgname"
+  cp -r README.mkd examples "$pkgdir/usr/share/doc/$pkgname"
 
   install -D -m 644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/license.txt"
 }
