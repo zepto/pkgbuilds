@@ -1,0 +1,52 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=unrpyc-git
+pkgver=20161127
+pkgrel=0.1
+pkgdesc="Tool to decompile Ren'py compiled .rpyc script files."
+arch=(any)
+url="https://github.com/CensoredUsername/unrpyc"
+license=('unknown')
+depends=(python2)
+makedepends=('git')
+provides=(unrpyc)
+
+_gitroot=https://github.com/CensoredUsername/unrpyc
+_gitname=unrpyc.git
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  python=$(which python2)
+
+  $python setup.py install --root="$pkgdir"
+
+  install -d "$pkgdir/usr/share/doc/$pkgname"
+
+  cp -r README "$pkgdir/usr/share/doc/$pkgname"
+
+  install -D -m 644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:

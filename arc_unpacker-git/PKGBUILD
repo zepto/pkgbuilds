@@ -1,0 +1,57 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=arc_unpacker-git
+pkgver=20161127
+pkgrel=0.11
+pkgdesc="the visual novel extractor"
+arch=('i686' 'x86_64')
+url="https://github.com/vn-tools/arc_unpacker"
+license=('GPL3')
+depends=('boost' 'libpng' 'libjpeg' 'zlib' 'openssl' 'libwebp')
+makedepends=('git')
+provides=(arc_unpacker)
+
+_gitroot=https://github.com/vn-tools/arc_unpacker
+_gitname=arc_unpacker-git
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+  mkdir build
+  cd build
+  cmake -DCMAKE_BUILD_TYPE=release ..
+  make -j8
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+
+  install -d "$pkgdir/usr/bin"
+
+  install -D -m 755 build/arc_unpacker "$pkgdir/usr/bin/arc_unpacker"
+
+  install -d "$pkgdir/usr/share/doc/$pkgname"
+
+  cp -r README.md etc "$pkgdir/usr/share/doc/$pkgname"
+
+  install -D -m 644 LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:
