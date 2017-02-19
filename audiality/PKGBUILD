@@ -18,6 +18,11 @@ build() {
 
   ./configure --prefix=/usr --libdir=/usr/lib --includedir=/usr/include --enable-shared=yes --enable-static=no
   make || return 1
+}
+
+package() {
+  cd "$srcdir/Audiality-$pkgver"
+
   make DESTDIR="$pkgdir/" install
 
   cp -d $pkgdir/usr/lib/{libaudiality,libaudiality.so}
