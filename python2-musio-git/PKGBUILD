@@ -1,13 +1,13 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=python2-musio-git
-pkgver=20130303
+pkgver=20170227
 pkgrel=1
 pkgdesc="A python audio I/O library."
 arch=(any)
 url="lime.tree"
 license=('GPL3')
 depends=(python2)
-optdepends=(portaudio alsa-lib ffmpeg espeak mpg123 faad2 libmp4v2 libgme fluidsynth dumb libmodplug libmikmod audiality libogg libvorbis libxmp lame)
+optdepends=(portaudio alsa-lib ffmpeg2.8 espeak mpg123 faad2 libmp4v2 libgme fluidsynth dumb libmodplug libmikmod audiality libogg libvorbis libxmp lame libid3tag)
 makedepends=('git')
 provides=(python2-musio)
 conflicts=(python2-musio)
@@ -47,7 +47,7 @@ package() {
 
   install -d "$pkgdir/usr/share/doc/$pkgname"
 
-  cp -r README.mkd utils examples "$pkgdir/usr/share/doc/$pkgname"
+  cp -r README.mkd examples "$pkgdir/usr/share/doc/$pkgname"
 
   install -D -m 644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/license.txt"
 }
