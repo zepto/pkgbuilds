@@ -1,0 +1,18 @@
+# Maintainer: Josiah Gordon <josiahg@gmail.com>
+pkgname=webtorrent-cli
+pkgver=1.12.3
+pkgrel=1
+pkgdesc="Package for using webtorrent  on the command line"
+arch=(any)
+url="https://github.com/webtorrent/webtorrent-cli"
+license=('MIT')
+depends=('nodejs')
+makedepends=('npm')
+source=(https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz)
+noextract=($pkgname-$pkgver.tgz)
+
+package() {
+  npm install -g --user root --prefix "$pkgdir/usr" "$srcdir/$pkgname-$pkgver.tgz"
+  find "${pkgdir}"/usr -type d -exec chmod 755 {} +
+}
+sha256sums=('e3e1db7e1d57d322e9263be1454e6af31e9713295fef0edb242d9ac0d97bf71b')
