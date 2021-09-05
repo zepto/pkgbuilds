@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=webbrowser2-git
-pkgver=20210807.63b30d1
+pkgver=r62.63b30d1
 pkgrel=1
 pkgdesc="A python webkit2 web browser."
 arch=(any)
@@ -12,40 +12,16 @@ provides=(webbrowser2)
 conflicts=(webbrowser2)
 replaces=(webbrowser2)
 install=webbrowser2.install
-
-_gitroot=git://github.com/zepto/webbrowser2.git
-_gitname=webbrowser2.git
+source=("git+https://www.github.com/zepto/webbrowser2.git")
+sha256sums=('SKIP')
 
 pkgver() {
-  cd "$srcdir/$_gitname"
-  git log -1 --format='%cd.%h' --date=short|tr -d -
-}
-
-build() {
-  cd "$srcdir"
-  msg "Connecting to GIT server...."
-
-  if [[ -d "$_gitname" ]]; then
-    cd "$_gitname" && git pull origin
-    msg "The local files are updated."
-  else
-    git clone "$_gitroot" "$_gitname"
-  fi
-
-  msg "GIT checkout done or server timeout"
-  msg "Starting build..."
-
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-  cd "$srcdir/$_gitname-build"
-
-  #
-  # BUILD HERE
-  #
+  cd "$srcdir/${pkgname%-git}"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
+  cd "$srcdir/${pkgname%-git}"
   python=$(which python)
 
   $python setup.py install --root="$pkgdir"

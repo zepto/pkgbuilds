@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=musio-git
-pkgver=20210905.3411626
+pkgver=r301.a20f315
 pkgrel=1
 pkgdesc="A python audio I/O library."
 arch=(any)
@@ -12,40 +12,16 @@ makedepends=('git')
 provides=(musio)
 conflicts=(musio)
 replaces=(musio)
-
-_gitroot=http://www.github.com/zepto/musio
-_gitname=musio.git
+source=("git+https://www.github.com/zepto/musio.git")
+sha256sums=('SKIP')
 
 pkgver() {
-  cd "$srcdir/$_gitname"
-  git log -1 --format='%cd.%h' --date=short|tr -d -
-}
-
-build() {
-  cd "$srcdir"
-  msg "Connecting to GIT server...."
-
-  if [[ -d "$_gitname" ]]; then
-    cd "$_gitname" && git pull origin
-    msg "The local files are updated."
-  else
-    git clone "$_gitroot" "$_gitname"
-  fi
-
-  msg "GIT checkout done or server timeout"
-  msg "Starting build..."
-
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-  cd "$srcdir/$_gitname-build"
-
-  #
-  # BUILD HERE
-  #
+  cd "$srcdir/${pkgname%-git}"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
+  cd "$srcdir/${pkgname%-git}"
   python=$(which python)
 
   $python setup.py install --root="$pkgdir"
