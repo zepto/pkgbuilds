@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=musio-git
-pkgver=20210809.a339c9a
+pkgver=20210905.3411626
 pkgrel=1
 pkgdesc="A python audio I/O library."
 arch=(any)
@@ -17,7 +17,7 @@ _gitroot=http://www.github.com/zepto/musio
 _gitname=musio.git
 
 pkgver() {
-  cd "$srcdir"
+  cd "$srcdir/$_gitname"
   git log -1 --format='%cd.%h' --date=short|tr -d -
 }
 

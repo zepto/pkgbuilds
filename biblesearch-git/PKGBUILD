@@ -1,7 +1,7 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 _pkgname=search_new.py
 pkgname=biblesearch-git
-pkgver=20210809.a339c9a
+pkgver=20210729.6564275
 pkgrel=1
 pkgdesc="A python sword bible indexer and searcher."
 arch=(any)
@@ -14,7 +14,7 @@ _gitroot=git://github.com/zepto/biblesearch.git
 _gitname=biblesearch
 
 pkgver() {
-  cd "$srcdir"
+  cd "$srcdir/$_gitname"
   git log -1 --format='%cd.%h' --date=short|tr -d -
 }
 
