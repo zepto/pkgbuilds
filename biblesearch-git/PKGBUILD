@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=biblesearch-git
-pkgver=r78.6564275
+pkgver=r80.a1e7426
 pkgrel=1
 pkgdesc="A python sword bible indexer and searcher."
 arch=(any)

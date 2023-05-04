@@ -1,6 +1,6 @@
 # Maintainer: Josiah Gordon <josiahg@gmail.com>
 pkgname=clipspeak-git
-pkgver=20130128
+pkgver=r18.fe67189
 pkgrel=1
 pkgdesc="A python clipboard reader"
 arch=(any)
@@ -8,31 +8,16 @@ url="http://github.com/zepto/clipspeak"
 license=('GPL3')
 depends=(python musio python-gobject)
 makedepends=('git')
+source=("git+https://www.github.com/zepto/clipspeak.git")
+sha256sums=('SKIP')
 
-_gitroot=git://github.com/zepto/clipspeak.git
-_gitname=clipspeak
-
-build() {
-  cd "$srcdir"
-  msg "Connecting to GIT server...."
-
-  if [[ -d "$_gitname" ]]; then
-    cd "$_gitname" && git pull origin
-    msg "The local files are updated."
-  else
-    git clone "$_gitroot" "$_gitname"
-  fi
-
-  msg "GIT checkout done or server timeout"
-  msg "Starting build..."
-
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-  cd "$srcdir/$_gitname-build"
+pkgver() {
+  cd "$srcdir/${pkgname%-git}"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
+  cd "$srcdir/${pkgname%-git}"
   python=$(which python)
 
   $python setup.py install --root="$pkgdir"
